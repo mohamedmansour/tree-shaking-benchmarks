@@ -1,0 +1,11 @@
+{
+    "compilerOptions": {
+      "target": "esnext",
+      "module": "NodeNext",
+      "moduleResolution": "nodenext",
+      "experimentalDecorators": true,
+      "useDefineForClassFields": false,
+      "strict": true
+    }
+  }
+  

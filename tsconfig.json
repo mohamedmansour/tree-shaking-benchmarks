@@ -1,0 +1,6 @@
+{
+  "extends": "./infra/tsconfig.base.json",
+  "compilerOptions": {
+    "noEmit": true
+  }
+}

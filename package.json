@@ -1,0 +1,36 @@
+{
+    "name": "example_app",
+    "version": "1.0.0",
+    "description": "Example App",
+    "type": "module",
+    "scripts": {
+        "start": "npm run tsc && node dist/infra.js serve",
+        "build": "npm run tsc && node dist/infra.js build",
+        "webpack": "npm run tsc && webpack --config dist/webpack.config.js",
+        "tsc": "tsc -p infra/tsconfig.json"
+    },
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "@fluentui/tokens": "1.0.0-alpha.7",
+        "@fluentui/web-components": "3.0.0-alpha.27",
+        "@fluentui/web-components-v1": "npm:@fluentui/web-components@1.6.1",
+        "@fluentui/web-components-v2": "npm:@fluentui/web-components@2.5.15",
+        "@microsoft/fast-element": "2.0.0-beta.24",
+        "@microsoft/fast-element-v1": "npm:@microsoft/fast-element@1.6.2",
+        "@microsoft/fast-element-v2": "npm:@microsoft/fast-element@1.12.0",
+        "@microsoft/fast-foundation": "3.0.0-alpha.28",
+        "@microsoft/fast-foundation-v1": "npm:@microsoft/fast-foundation@2.29.0",
+        "@microsoft/fast-foundation-v2": "npm:@microsoft/fast-foundation@2.49.0",
+        "@microsoft/fast-web-utilities": "6.0.0",
+        "@microsoft/fast-web-utilities-v1": "npm:@microsoft/fast-web-utilities@4.8.1",
+        "@microsoft/fast-web-utilities-v2": "npm:@microsoft/fast-web-utilities@6.0.0",
+        "lit": "2.8.0"
+    },
+    "devDependencies": {
+        "@types/node": "20.4.8",
+        "commander": "11.0.0",
+        "esbuild": "0.19.0",
+        "typescript": "5.1.6"
+    }
+}

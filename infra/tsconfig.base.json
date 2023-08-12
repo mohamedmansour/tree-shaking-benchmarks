@@ -1,11 +1,13 @@
 {
     "compilerOptions": {
-      "target": "esnext",
-      "module": "NodeNext",
-      "moduleResolution": "nodenext",
-      "experimentalDecorators": true,
-      "useDefineForClassFields": false,
-      "strict": true
+      "target": "esnext",                   // Latest JS Standard.
+      "module": "esnext",                   // ESModules support.
+      "moduleResolution": "node",           // NodeJS module resolution.
+      "experimentalDecorators": true,       // To support FAST decorators.
+      "useDefineForClassFields": false,     // To support FAST observables.
+      "skipLibCheck": true,                 // TypeScript 5 feature to disable node_modules typecheck.
+      "allowSyntheticDefaultImports": true, // For supporting default imports.
+      "strict": true                        // Security Needed.
     }
   }
   

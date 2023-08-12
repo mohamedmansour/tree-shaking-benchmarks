@@ -1,7 +1,7 @@
 {
   "extends": "./infra/tsconfig.base.json",
   "compilerOptions": {
-    "noEmit": true,
-    "jsx": "react"
+    "noEmit": true,           // Don't emit JS files, just use typechecking.
+    "jsx": "react"            // React JSX support.
   }
 }

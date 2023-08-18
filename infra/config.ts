@@ -1,9 +1,11 @@
-export const entryPoints: string[] = [
-    'webuis/lit-element/app.ts',
-    'webuis/fast-element/app.ts',
-    'webuis/react/app.tsx',
-    'webuis/fastv1/app.ts',
-    'webuis/fastv2/app.ts',
-    'webuis/fastv3/app.ts',
-    'webuis/litmaterialv1/app.ts'
-]
+import path from "node:path"
+
+export const ENTRY_POINTS: Record<string, string> = {
+    'lit-element': 'webuis/lit-element/app.ts',
+    'lit-material': 'webuis/lit-material/app.ts',
+    'fast-element': 'webuis/fast-element/app.ts',
+    'fast-fluent': 'webuis/fast-fluent/app.ts',
+    'react': 'webuis/react/app.tsx',
+}
+
+export const DIST_DIR = path.dirname(new URL(import.meta.url).pathname).substring(1)

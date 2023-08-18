@@ -1,6 +1,6 @@
 {
     "extends": "./tsconfig.base.json",
     "compilerOptions": {
-        "outDir": "../dist"     // Output directory for infra code.
+        "outDir": "../dist/infra"     // Output directory for infra code.
     }
 }

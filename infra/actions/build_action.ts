@@ -2,13 +2,13 @@ import * as esbuild from 'esbuild'
 import { BaseAction } from "./base_action.js";
 import fs from 'node:fs'
 import path from 'node:path'
-
-const INFRA_DIR = path.dirname(new URL(import.meta.url).pathname).substring(1)
+import { DIST_DIR } from '../config.js';
 
 class BuildAction extends BaseAction {
     async run(): Promise<void> {
         const results = await esbuild.build(this.options)
-        fs.writeFileSync(path.join(INFRA_DIR, '../meta.json'), JSON.stringify(results.metafile, null, 2))
+        fs.mkdirSync(DIST_DIR, { recursive: true })
+        fs.writeFileSync(path.join(DIST_DIR, 'meta.json'), JSON.stringify(results.metafile, null, 2))
 
         for (const output in results.metafile?.outputs) {
             const file = results.metafile?.outputs[output]

@@ -1,5 +1,7 @@
 import * as esbuild from 'esbuild'
+import fs from 'node:fs'
 import http from 'node:http'
+import path from 'node:path'
 import { URL } from 'node:url'
 import { BaseAction } from "./base_action.js"
 
@@ -7,15 +9,19 @@ class ServeAction extends BaseAction {
     handlerMap: Map<string, (req: http.IncomingMessage, res: http.ServerResponse) => void> = new Map()
 
     async run(): Promise<void> {
+        this.deleteFolder('dist')
+
         // Build the app.
         const context = await esbuild.context(this.options)
+
+        this.copyFolder('www', 'dist')
 
         // Add Live Reloading.
         await context.watch()
 
         // Start webserver on random port.
         const { host, port } = await context.serve({
-            servedir: 'www',
+            servedir: 'dist',
             onRequest: (args) => this.onEsbuildRequest(args)
         })
 
@@ -80,6 +86,23 @@ class ServeAction extends BaseAction {
         res.writeHead(200, { 'Content-Type': 'application/json' })
         res.write(JSON.stringify({ status: 'ok' }))
         res.end()
+    }
+
+    
+    private copyFolder(sourceFolder: string, destinationFolder: string): void {
+        fs.mkdirSync(destinationFolder, { recursive: true })
+        const files = fs.readdirSync(sourceFolder)
+        for (const file of files) {
+            const sourceFilePath = path.join(sourceFolder, file)
+            const destinationFilePath = path.join(destinationFolder, file)
+            fs.copyFileSync(sourceFilePath, destinationFilePath)
+        }
+    }
+
+    private deleteFolder(path: string): void {
+      if (fs.existsSync(path)) {
+        fs.rmSync(path, { recursive: true })
+      }
     }
 }
 

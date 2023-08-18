@@ -1,6 +1,7 @@
 import * as esbuild from 'esbuild'
 import { ENTRY_POINTS } from '../config.js'
-export abstract class BaseAction {
+
+export abstract class EsbuildBaseAction {
     options: esbuild.BuildOptions
 
     constructor() {

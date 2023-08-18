@@ -9,8 +9,6 @@ class ServeAction extends BaseAction {
     handlerMap: Map<string, (req: http.IncomingMessage, res: http.ServerResponse) => void> = new Map()
 
     async run(): Promise<void> {
-        this.deleteFolder('dist')
-
         // Build the app.
         const context = await esbuild.context(this.options)
 

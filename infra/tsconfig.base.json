@@ -7,7 +7,9 @@
       "useDefineForClassFields": false,     // To support FAST observables.
       "skipLibCheck": true,                 // TypeScript 5 feature to disable node_modules typecheck.
       "allowSyntheticDefaultImports": true, // For supporting default imports.
-      "strict": true                        // Security Needed.
+      "strict": true,                       // Security Needed.
+      "isolatedModules": true,              // Avoid mis-compilation with features like re-exporting types.
+      "esModuleInterop": true,              // Make type system compatible with ESM imports.
     }
   }
   

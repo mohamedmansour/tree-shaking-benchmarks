@@ -3,5 +3,11 @@
   "compilerOptions": {
     "noEmit": true,           // Don't emit JS files, just use typechecking.
     "jsx": "react"            // React JSX support.
-  }
+  },
+  "include": [
+    "./webuis/**/*"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }

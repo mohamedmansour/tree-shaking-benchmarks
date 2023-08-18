@@ -8,9 +8,9 @@ export abstract class BaseAction {
             entryPoints: ENTRY_POINTS,
             bundle: true,
             // splitting: true,
-            outdir: 'dist/bundles',
+            outdir: 'dist/esbuild',
             format: 'esm',
-            // minify: true,
+            minify: true,
             // There are side-effects in FAST libraries since we are doing bare imports.
             ignoreAnnotations: true,
             target: 'esnext',

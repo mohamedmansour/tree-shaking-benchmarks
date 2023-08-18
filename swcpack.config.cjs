@@ -6,7 +6,7 @@ module.exports = config({
     "lit-material": __dirname + '/webuis/lit-material/app.ts',
     "fast-element": __dirname + '/webuis/fast-element/app.ts',
     "fast-fluent": __dirname + '/webuis/fast-fluent/app.ts',
-    // "react": __dirname + '/webuis/react/app.tsx',
+    "react": __dirname + '/webuis/react/app.tsx',
   },
   output: {
     path: __dirname + "/dist/swc",

@@ -4,8 +4,8 @@
     "description": "Example App",
     "type": "module",
     "scripts": {
-        "start": "npm run tsc && node dist/infra/infra.js serve",
-        "esbuild": "npm run tsc && node dist/infra/infra.js build",
+        "start": "npm run tsc && node dist/infra/infra.js esbuild:serve",
+        "esbuild": "npm run tsc && node dist/infra/infra.js esbuild:build",
         "swc": "spack --config ./swcpack.config.cjs",
         "webpack": "webpack --config ./webpack.config.cjs",
         "tsc": "tsc -p infra/tsconfig.json"

@@ -1,10 +1,10 @@
 import * as esbuild from 'esbuild'
-import { BaseAction } from "./base_action.js";
+import { EsbuildBaseAction } from "./esbuild_base_action.js";
 import fs from 'node:fs'
 import path from 'node:path'
 import { DIST_DIR } from '../config.js';
 
-class BuildAction extends BaseAction {
+class EsbuildBuildAction extends EsbuildBaseAction {
     async run(): Promise<void> {
         const results = await esbuild.build(this.options)
         fs.mkdirSync(DIST_DIR, { recursive: true })
@@ -30,6 +30,6 @@ class BuildAction extends BaseAction {
 }
 
 export default function(): Promise<void> {
-    const action = new BuildAction()
+    const action = new EsbuildBuildAction()
     return action.run()
 }

@@ -3,9 +3,9 @@ import fs from 'node:fs'
 import http from 'node:http'
 import path from 'node:path'
 import { URL } from 'node:url'
-import { BaseAction } from "./base_action.js"
+import { EsbuildBaseAction } from "./esbuild_base_action.js"
 
-class ServeAction extends BaseAction {
+class EsbuildServeAction extends EsbuildBaseAction {
     handlerMap: Map<string, (req: http.IncomingMessage, res: http.ServerResponse) => void> = new Map()
 
     async run(): Promise<void> {
@@ -105,6 +105,6 @@ class ServeAction extends BaseAction {
 }
 
 export default function(): Promise<void> {
-    const action = new ServeAction()
+    const action = new EsbuildServeAction()
     return action.run()
 }

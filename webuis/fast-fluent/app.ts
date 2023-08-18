@@ -2,7 +2,8 @@ import { customElement, html, FASTElement } from '@microsoft/fast-element-v3';
 import { DesignToken } from '@microsoft/fast-foundation-v3';
 import { setTheme } from '@fluentui/web-components-v3';
 import { webDarkTheme } from '@fluentui/tokens';
-import '@fluentui/web-components-v3/button'
+import * as Button from '@fluentui/web-components-v3/button'
+Button;
 
 @customElement({
   name: 'example-app',

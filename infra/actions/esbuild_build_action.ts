@@ -1,9 +1,11 @@
-import * as esbuild from 'esbuild'
-import { EsbuildBaseAction } from "./esbuild_base_action.js";
 import fs from 'node:fs'
 import path from 'node:path'
+
+import * as esbuild from 'esbuild'
+
 import { DIST_DIR } from '../config.js';
 import { formatFileSize } from '../utils/format_utils.js';
+import { EsbuildBaseAction } from "./esbuild_base_action.js";
 
 class EsbuildBuildAction extends EsbuildBaseAction {
     async run(): Promise<void> {

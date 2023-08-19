@@ -7,7 +7,7 @@
         "start": "npm run tsc && node dist/infra/infra.js esbuild:serve",
         "esbuild": "npm run tsc && node dist/infra/infra.js esbuild:build",
         "swc": "spack --config ./swcpack.config.cjs",
-        "webpack": "webpack --config ./webpack.config.cjs",
+        "webpack": "npm run tsc && node dist/infra/infra.js webpack:build",
         "tsc": "tsc -p infra/tsconfig.json"
     },
     "author": "",

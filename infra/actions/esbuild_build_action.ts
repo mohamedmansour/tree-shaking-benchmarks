@@ -3,6 +3,7 @@ import { EsbuildBaseAction } from "./esbuild_base_action.js";
 import fs from 'node:fs'
 import path from 'node:path'
 import { DIST_DIR } from '../config.js';
+import { formatFileSize } from '../utils/format_utils.js';
 
 class EsbuildBuildAction extends EsbuildBaseAction {
     async run(): Promise<void> {
@@ -13,7 +14,7 @@ class EsbuildBuildAction extends EsbuildBaseAction {
         for (const output in results.metafile?.outputs) {
             const file = results.metafile?.outputs[output]
             if (file.entryPoint) {
-                console.log(`Built ${output} from ${file.entryPoint} (${this.getFileSize(output)})`)
+                console.log(`Built ${output} (${formatFileSize(file.bytes)})`)
                 file.imports.forEach((imported) => {
                     console.log(`  ${imported.path} (${this.getFileSize(imported.path)})`)
                 })

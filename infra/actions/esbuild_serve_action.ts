@@ -1,8 +1,10 @@
-import * as esbuild from 'esbuild'
 import fs from 'node:fs'
 import http from 'node:http'
 import path from 'node:path'
 import { URL } from 'node:url'
+
+import * as esbuild from 'esbuild'
+
 import { EsbuildBaseAction } from "./esbuild_base_action.js"
 
 class EsbuildServeAction extends EsbuildBaseAction {

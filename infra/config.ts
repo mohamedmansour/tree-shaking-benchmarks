@@ -1,4 +1,4 @@
-import path from "node:path"
+import path from 'node:path'
 
 export const ENTRY_POINTS: Record<string, string> = {
     'lit-element': './webuis/lit-element/app.ts',

@@ -1,6 +1,8 @@
-import webpack, { StatsAsset } from 'webpack'
-import { DIST_DIR, ENTRY_POINTS } from '../config.js'
 import path from 'node:path'
+
+import webpack, { StatsAsset } from 'webpack'
+
+import { DIST_DIR, ENTRY_POINTS } from '../config.js'
 import { formatFileSize } from '../utils/format_utils.js'
 
 class WebpackBuildAction {

@@ -1,4 +1,5 @@
 import * as esbuild from 'esbuild'
+
 import { ENTRY_POINTS } from '../config.js'
 
 export abstract class EsbuildBaseAction {

@@ -9,3 +9,5 @@ export const ENTRY_POINTS: Record<string, string> = {
 }
 
 export const DIST_DIR = path.dirname(path.dirname(new URL(import.meta.url).pathname)).substring(1)
+
+export const NODE_MODULE_DIR = path.join(DIST_DIR, '../node_modules')

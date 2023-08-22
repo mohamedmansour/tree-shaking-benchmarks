@@ -13,8 +13,6 @@ export abstract class EsbuildBaseAction {
             outdir: 'dist/esbuild',
             format: 'esm',
             minify: true,
-            // There are side-effects in FAST libraries since we are doing bare imports.
-            ignoreAnnotations: true,
             target: 'esnext',
             sourcemap: true,
             tsconfig: 'tsconfig.json',

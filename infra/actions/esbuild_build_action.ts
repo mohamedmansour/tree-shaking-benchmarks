@@ -10,8 +10,10 @@ import { EsbuildBaseAction } from "./esbuild_base_action.js";
 class EsbuildBuildAction extends EsbuildBaseAction {
     async run(): Promise<void> {
         const results = await esbuild.build(this.options)
-        fs.mkdirSync(DIST_DIR, { recursive: true })
-        fs.writeFileSync(path.join(DIST_DIR, 'meta.json'), JSON.stringify(results.metafile, null, 2))
+        const esbuildDirectory = path.join(DIST_DIR, 'esbuild')
+        fs.mkdirSync(esbuildDirectory, { recursive: true })
+        console.log(esbuildDirectory)
+        fs.writeFileSync(path.join(esbuildDirectory, 'meta.json'), JSON.stringify(results.metafile, null, 2))
 
         for (const output in results.metafile?.outputs) {
             const file = results.metafile?.outputs[output]

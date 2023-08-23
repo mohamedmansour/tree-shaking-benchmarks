@@ -15,7 +15,7 @@ class EsbuildServeAction extends EsbuildBaseAction {
         // Build the app.
         const esbuildOptions: esbuild.BuildOptions = {
             ...this.options,
-            // plugins: [FluentUIEsmoduleResolverplugin]
+            plugins: [FluentUIEsmoduleResolverplugin]
         }
         const context = await esbuild.context(esbuildOptions)
 

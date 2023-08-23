@@ -12,7 +12,7 @@ export abstract class EsbuildBaseAction {
             // splitting: true,
             outdir: 'dist/esbuild',
             format: 'esm',
-            minify: true,
+            // minify: true,
             target: 'esnext',
             sourcemap: true,
             tsconfig: 'tsconfig.json',

@@ -6,13 +6,18 @@ import { URL } from 'node:url'
 import * as esbuild from 'esbuild'
 
 import { EsbuildBaseAction } from "./esbuild_base_action.js"
+import { FluentUIEsmoduleResolverplugin } from '../plugins/fluentui_esmodule_resolver_plugin.js'
 
 class EsbuildServeAction extends EsbuildBaseAction {
     handlerMap: Map<string, (req: http.IncomingMessage, res: http.ServerResponse) => void> = new Map()
 
     async run(): Promise<void> {
         // Build the app.
-        const context = await esbuild.context(this.options)
+        const esbuildOptions: esbuild.BuildOptions = {
+            ...this.options,
+            // plugins: [FluentUIEsmoduleResolverplugin]
+        }
+        const context = await esbuild.context(esbuildOptions)
 
         this.copyFolder('www', 'dist')
 

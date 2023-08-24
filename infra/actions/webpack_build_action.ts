@@ -7,7 +7,7 @@ import { formatFileSize } from '../utils/format_utils.js'
 
 class WebpackBuildAction {
     async run(): Promise<void> {
-        await this.build(ENTRY_POINTS, /*useAlias=*/false)
+        await this.build(ENTRY_POINTS, /*useAlias=*/true)
         await this.build(SPECIAL_ENTRY_POINTS, /*useAlias=*/true)
     }
 

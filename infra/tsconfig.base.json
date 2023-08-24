@@ -2,7 +2,7 @@
     "compilerOptions": {
       "target": "esnext",                   // Latest JS Standard.
       "module": "esnext",                   // ESModules support.
-      "moduleResolution": "node",           // NodeJS module resolution.
+      "moduleResolution": "Node16",         // NodeJS module resolution.
       "experimentalDecorators": true,       // To support FAST decorators.
       "useDefineForClassFields": false,     // To support FAST observables.
       "skipLibCheck": true,                 // TypeScript 5 feature to disable node_modules typecheck.

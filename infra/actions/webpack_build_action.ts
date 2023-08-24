@@ -2,7 +2,7 @@ import path from 'node:path'
 
 import webpack, { StatsAsset } from 'webpack'
 
-import { DIST_DIR, ENTRY_POINTS } from '../config.js'
+import { DIST_DIR, ENTRY_POINTS, SPECIAL_ENTRY_POINTS } from '../config.js'
 import { formatFileSize } from '../utils/format_utils.js'
 
 class WebpackBuildAction {
@@ -21,7 +21,7 @@ class WebpackBuildAction {
                 resolve: {
                   extensions: ['.js', '.ts', '.tsx'],
                 },
-                entry: ENTRY_POINTS,
+                entry: {...ENTRY_POINTS, ...SPECIAL_ENTRY_POINTS},
                 output: {
                   path: path.join(DIST_DIR, 'webpack'),
                   publicPath: '/dist/',
@@ -52,7 +52,7 @@ class WebpackBuildAction {
                     })
                     resolve(buildStats.assets || [])
                 } else {
-                    reject('No stats object!');
+                    reject('No stats object!')
                 }
             })
         })

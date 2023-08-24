@@ -28,7 +28,7 @@ export const FluentUIEsmoduleResolverplugin: esbuild.Plugin = {
           return { path: result.path, external: false }
         }
         
-        return null;
+        return null
       })
     },
   }

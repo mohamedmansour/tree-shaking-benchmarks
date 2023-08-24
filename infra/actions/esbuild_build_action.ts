@@ -3,22 +3,22 @@ import path from 'node:path'
 
 import * as esbuild from 'esbuild'
 
-import { DIST_DIR, ENTRY_POINTS, SPECIAL_ENTRY_POINTS } from '../config.js';
-import { formatFileSize } from '../utils/format_utils.js';
-import { EsbuildBaseAction } from "./esbuild_base_action.js";
-import { FluentUIEsmoduleResolverplugin } from '../plugins/fluentui_esmodule_resolver_plugin.js';
+import { DIST_DIR, ENTRY_POINTS, SPECIAL_ENTRY_POINTS } from '../config.js'
+import { formatFileSize } from '../utils/format_utils.js'
+import { EsbuildBaseAction } from "./esbuild_base_action.js"
+import { FluentUIEsmoduleResolverplugin } from '../plugins/fluentui_esmodule_resolver_plugin.js'
 
 class EsbuildBuildAction extends EsbuildBaseAction {
     async run(): Promise<void> {
-        await this.build(ENTRY_POINTS, true);
-        await this.build(SPECIAL_ENTRY_POINTS, true);
+        await this.build(ENTRY_POINTS, /*usePlugin=*/false)
+        await this.build(SPECIAL_ENTRY_POINTS,  /*usePlugin=*/true)
     }
 
     private async build(entryPoints: Record<string, string>, usePlugin: boolean): Promise<void> {
         const results = await esbuild.build({
             ...this.options,
             entryPoints,
-            plugins: usePlugin ? [FluentUIEsmoduleResolverplugin] : undefined
+            plugins: usePlugin ? [FluentUIEsmoduleResolverplugin] : []
         })
         const esbuildDirectory = path.join(DIST_DIR, 'esbuild')
         fs.mkdirSync(esbuildDirectory, { recursive: true })

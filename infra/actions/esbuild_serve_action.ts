@@ -11,6 +11,11 @@ import { SPECIAL_ENTRY_POINTS } from '../config.js'
 class EsbuildServeAction extends EsbuildBaseAction {
     handlerMap: Map<string, (req: http.IncomingMessage, res: http.ServerResponse) => void> = new Map()
 
+    constructor() {
+        super()
+        this.handlerMap.set('/api', (req, res) => this.handleApi(req, res))
+    }
+    
     async run(): Promise<void> {
         // Build the app.
         const esbuildOptions: esbuild.BuildOptions = {
@@ -24,7 +29,8 @@ class EsbuildServeAction extends EsbuildBaseAction {
         const context = await esbuild.context(esbuildOptions)
 
         this.copyFolder('www', 'dist')
-
+        fs.copyFileSync('dist/fast-fluent-aliased.html', 'dist/index.html')
+        
         // Add Live Reloading.
         await context.watch()
 

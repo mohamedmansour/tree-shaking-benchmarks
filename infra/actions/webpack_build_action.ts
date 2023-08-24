@@ -1,27 +1,29 @@
 import path from 'node:path'
 
-import webpack, { StatsAsset } from 'webpack'
+import webpack from 'webpack'
 
 import { DIST_DIR, ENTRY_POINTS, SPECIAL_ENTRY_POINTS } from '../config.js'
 import { formatFileSize } from '../utils/format_utils.js'
 
 class WebpackBuildAction {
     async run(): Promise<void> {
-        const stats = await this.build()
-        for (const asset of stats) {
-            console.log(`Built ${path.join('dist/webpack/', asset.name)} (${formatFileSize(asset.size)})`)
-        }
+        await this.build(ENTRY_POINTS, /*useAlias=*/false)
+        await this.build(SPECIAL_ENTRY_POINTS, /*useAlias=*/true)
     }
 
-    private async build(): Promise<StatsAsset[]> {
+    private async build(entryPoints: Record<string, string>, useAliases: boolean): Promise<void> {
         return new Promise((resolve, reject) => {
             webpack({
                 mode: "production",
                 devtool: 'hidden-source-map',
                 resolve: {
                   extensions: ['.js', '.ts', '.tsx'],
+                  alias: useAliases ? {
+                    '@microsoft/fast-element': '@microsoft/fast-element-v3',
+                    '@microsoft/fast-foundation': '@microsoft/fast-foundation-v3',
+                  } : {},
                 },
-                entry: {...ENTRY_POINTS, ...SPECIAL_ENTRY_POINTS},
+                entry: entryPoints,
                 output: {
                   path: path.join(DIST_DIR, 'webpack'),
                   publicPath: '/dist/',
@@ -50,7 +52,11 @@ class WebpackBuildAction {
                     const buildStats = stats.toJson({
                         assets: true,
                     })
-                    resolve(buildStats.assets || [])
+                    
+                    for (const asset of buildStats.assets || []) {
+                        console.log(`Built ${path.join('dist/webpack/', asset.name)} (${formatFileSize(asset.size)})`)
+                    }
+                    resolve()
                 } else {
                     reject('No stats object!')
                 }

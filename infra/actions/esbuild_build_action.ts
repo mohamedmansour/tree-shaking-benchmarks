@@ -9,11 +9,11 @@ import { EsbuildBaseAction } from "./esbuild_base_action.js"
 
 class EsbuildBuildAction extends EsbuildBaseAction {
     async run(): Promise<void> {
-        await this.build(ENTRY_POINTS, /*useAliases=*/false)
-        await this.build(SPECIAL_ENTRY_POINTS,  /*useAliases=*/true)
+        await this.build(ENTRY_POINTS, /*useAliases=*/true, 'meta.json')
+        await this.build(SPECIAL_ENTRY_POINTS,  /*useAliases=*/true, 'meta-special.json')
     }
 
-    private async build(entryPoints: Record<string, string>, useAliases: boolean): Promise<void> {
+    private async build(entryPoints: Record<string, string>, useAliases: boolean, metaFileName: string): Promise<void> {
         const results = await esbuild.build({
             ...this.options,
             entryPoints,
@@ -21,7 +21,7 @@ class EsbuildBuildAction extends EsbuildBaseAction {
         })
         const esbuildDirectory = path.join(DIST_DIR, 'esbuild')
         fs.mkdirSync(esbuildDirectory, { recursive: true })
-        fs.writeFileSync(path.join(esbuildDirectory, useAliases ? 'aliases-meta.json' : 'meta.json'), JSON.stringify(results.metafile, null, 2))
+        fs.writeFileSync(path.join(esbuildDirectory, metaFileName), JSON.stringify(results.metafile, null, 2))
 
         for (const output in results.metafile?.outputs) {
             const file = results.metafile?.outputs[output]

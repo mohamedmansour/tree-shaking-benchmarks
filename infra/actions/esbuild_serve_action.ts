@@ -6,7 +6,7 @@ import { URL } from 'node:url'
 import * as esbuild from 'esbuild'
 
 import { EsbuildBaseAction } from "./esbuild_base_action.js"
-import { SPECIAL_ENTRY_POINTS } from '../config.js'
+import { SPECIAL_ALIASES, SPECIAL_ENTRY_POINTS } from '../config.js'
 
 class EsbuildServeAction extends EsbuildBaseAction {
     handlerMap: Map<string, (req: http.IncomingMessage, res: http.ServerResponse) => void> = new Map()
@@ -21,10 +21,7 @@ class EsbuildServeAction extends EsbuildBaseAction {
         const esbuildOptions: esbuild.BuildOptions = {
             ...this.options,
             entryPoints: SPECIAL_ENTRY_POINTS,
-            alias: {
-                '@microsoft/fast-element': '@microsoft/fast-element-v3',
-                '@microsoft/fast-foundation': '@microsoft/fast-foundation-v3',
-            }
+            alias: SPECIAL_ALIASES
         }
         const context = await esbuild.context(esbuildOptions)
 

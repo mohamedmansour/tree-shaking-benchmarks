@@ -3,7 +3,7 @@ import path from 'node:path'
 
 import * as esbuild from 'esbuild'
 
-import { DIST_DIR, ENTRY_POINTS, SPECIAL_ENTRY_POINTS } from '../config.js'
+import { DIST_DIR, ENTRY_POINTS, SPECIAL_ALIASES, SPECIAL_ENTRY_POINTS } from '../config.js'
 import { formatFileSize } from '../utils/format_utils.js'
 import { EsbuildBaseAction } from "./esbuild_base_action.js"
 
@@ -17,10 +17,7 @@ class EsbuildBuildAction extends EsbuildBaseAction {
         const results = await esbuild.build({
             ...this.options,
             entryPoints,
-            alias: useAliases ? {
-                '@microsoft/fast-element': '@microsoft/fast-element-v3',
-                '@microsoft/fast-foundation': '@microsoft/fast-foundation-v3',
-            } : {}
+            alias: useAliases ? SPECIAL_ALIASES : {}
         })
         const esbuildDirectory = path.join(DIST_DIR, 'esbuild')
         fs.mkdirSync(esbuildDirectory, { recursive: true })

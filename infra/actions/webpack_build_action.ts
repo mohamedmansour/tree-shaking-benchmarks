@@ -2,7 +2,7 @@ import path from 'node:path'
 
 import webpack from 'webpack'
 
-import { DIST_DIR, ENTRY_POINTS, SPECIAL_ENTRY_POINTS } from '../config.js'
+import { DIST_DIR, ENTRY_POINTS, SPECIAL_ALIASES, SPECIAL_ENTRY_POINTS } from '../config.js'
 import { formatFileSize } from '../utils/format_utils.js'
 
 class WebpackBuildAction {
@@ -18,10 +18,7 @@ class WebpackBuildAction {
                 devtool: 'hidden-source-map',
                 resolve: {
                   extensions: ['.js', '.ts', '.tsx'],
-                  alias: useAliases ? {
-                    '@microsoft/fast-element': '@microsoft/fast-element-v3',
-                    '@microsoft/fast-foundation': '@microsoft/fast-foundation-v3',
-                  } : {},
+                  alias: useAliases ? SPECIAL_ALIASES : {},
                 },
                 entry: entryPoints,
                 output: {

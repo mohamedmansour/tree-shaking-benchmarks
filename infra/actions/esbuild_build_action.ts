@@ -6,23 +6,25 @@ import * as esbuild from 'esbuild'
 import { DIST_DIR, ENTRY_POINTS, SPECIAL_ENTRY_POINTS } from '../config.js'
 import { formatFileSize } from '../utils/format_utils.js'
 import { EsbuildBaseAction } from "./esbuild_base_action.js"
-import { FluentUIEsmoduleResolverplugin } from '../plugins/fluentui_esmodule_resolver_plugin.js'
 
 class EsbuildBuildAction extends EsbuildBaseAction {
     async run(): Promise<void> {
-        await this.build(ENTRY_POINTS, /*usePlugin=*/false)
-        await this.build(SPECIAL_ENTRY_POINTS,  /*usePlugin=*/true)
+        await this.build(ENTRY_POINTS, /*useAliases=*/false)
+        await this.build(SPECIAL_ENTRY_POINTS,  /*useAliases=*/true)
     }
 
-    private async build(entryPoints: Record<string, string>, usePlugin: boolean): Promise<void> {
+    private async build(entryPoints: Record<string, string>, useAliases: boolean): Promise<void> {
         const results = await esbuild.build({
             ...this.options,
             entryPoints,
-            plugins: usePlugin ? [FluentUIEsmoduleResolverplugin] : []
+            alias: useAliases ? {
+                '@microsoft/fast-element': '@microsoft/fast-element-v3',
+                '@microsoft/fast-foundation': '@microsoft/fast-foundation-v3',
+            } : {}
         })
         const esbuildDirectory = path.join(DIST_DIR, 'esbuild')
         fs.mkdirSync(esbuildDirectory, { recursive: true })
-        fs.writeFileSync(path.join(esbuildDirectory, usePlugin ? 'plugin-meta.json' : 'meta.json'), JSON.stringify(results.metafile, null, 2))
+        fs.writeFileSync(path.join(esbuildDirectory, useAliases ? 'aliases-meta.json' : 'meta.json'), JSON.stringify(results.metafile, null, 2))
 
         for (const output in results.metafile?.outputs) {
             const file = results.metafile?.outputs[output]

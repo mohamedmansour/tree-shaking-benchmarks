@@ -2,7 +2,14 @@
   "extends": "./infra/tsconfig.base.json",
   "compilerOptions": {
     "noEmit": true,           // Don't emit JS files, just use typechecking.
-    "jsx": "react"            // React JSX support.
+    "jsx": "react",            // React JSX support.
+    "baseUrl": "/node_modules",
+    "paths": {
+      "@fluentui/web-components": ["@fluentui/web-components-v3"],
+      "@microsoft/fast-foundation": ["@microsoft/fast-foundation-v3"],
+      "@microsoft/fast-element": ["@microsoft/fast-element-v3"],
+      "@microsoft/fast-web-utilities": ["@microsoft/fast-web-utilities-v3"]
+    }
   },
   "include": [
     "./webuis/**/*"

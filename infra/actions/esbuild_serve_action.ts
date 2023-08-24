@@ -6,7 +6,7 @@ import { URL } from 'node:url'
 import * as esbuild from 'esbuild'
 
 import { EsbuildBaseAction } from "./esbuild_base_action.js"
-import { FluentUIEsmoduleResolverplugin } from '../plugins/fluentui_esmodule_resolver_plugin.js'
+import { SPECIAL_ENTRY_POINTS } from '../config.js'
 
 class EsbuildServeAction extends EsbuildBaseAction {
     handlerMap: Map<string, (req: http.IncomingMessage, res: http.ServerResponse) => void> = new Map()
@@ -15,7 +15,11 @@ class EsbuildServeAction extends EsbuildBaseAction {
         // Build the app.
         const esbuildOptions: esbuild.BuildOptions = {
             ...this.options,
-            plugins: [FluentUIEsmoduleResolverplugin]
+            entryPoints: SPECIAL_ENTRY_POINTS,
+            alias: {
+                '@microsoft/fast-element': '@microsoft/fast-element-v3',
+                '@microsoft/fast-foundation': '@microsoft/fast-foundation-v3',
+            }
         }
         const context = await esbuild.context(esbuildOptions)
 
@@ -92,7 +96,6 @@ class EsbuildServeAction extends EsbuildBaseAction {
         res.write(JSON.stringify({ status: 'ok' }))
         res.end()
     }
-
     
     private copyFolder(sourceFolder: string, destinationFolder: string): void {
         fs.mkdirSync(destinationFolder, { recursive: true })

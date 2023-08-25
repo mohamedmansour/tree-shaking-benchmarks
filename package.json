@@ -16,7 +16,7 @@
     "dependencies": {
         "@fluentui/tokens": "1.0.0-alpha.2",
         "@fluentui/web-components": "2.5.16",
-        "@fluentui/web-components-v3": "npm:@fluentui/web-components@3.0.0-alpha.30",
+        "@fluentui/web-components-v3": "npm:@fluentui/web-components@3.0.0-alpha.31",
         "@material/web": "1.0.0-pre.14",
         "@microsoft/fast-element": "1.11.1",
         "@microsoft/fast-element-v3": "npm:@microsoft/fast-element@2.0.0-beta.26",

@@ -6,16 +6,7 @@ export const ENTRY_POINTS: Record<string, string> = {
     'fast-element': './webuis/fast-element/app.ts',
     'fast-fluent': './webuis/fast-fluent/app.ts',
     'react': './webuis/react/app.tsx',
-}
-
-export const SPECIAL_ENTRY_POINTS: Record<string, string> = {
-    'fast-fluent-aliased': './webuis/fast-fluent-aliased/app.ts',
-}
-export const SPECIAL_ALIASES: Record<string, string> = {
-    '@fluentui/web-components': '@fluentui/web-components-v3',
-    '@microsoft/fast-element': '@microsoft/fast-element-v3',
-    '@microsoft/fast-foundation': '@microsoft/fast-foundation-v3',
-    '@microsoft/fast-web-utilities': '@microsoft/fast-web-utilities-v3',
+    'react-fluent': './webuis/react-fluent/app.tsx'
 }
 
 export const DIST_DIR = path.dirname(path.dirname(new URL(import.meta.url).pathname)).substring(1)

@@ -2,23 +2,21 @@ import path from 'node:path'
 
 import webpack from 'webpack'
 
-import { DIST_DIR, ENTRY_POINTS, SPECIAL_ALIASES, SPECIAL_ENTRY_POINTS } from '../config.js'
+import { DIST_DIR, ENTRY_POINTS } from '../config.js'
 import { formatFileSize } from '../utils/format_utils.js'
 
 class WebpackBuildAction {
     async run(): Promise<void> {
-        await this.build(ENTRY_POINTS, /*useAlias=*/true)
-        await this.build(SPECIAL_ENTRY_POINTS, /*useAlias=*/true)
+        await this.build(ENTRY_POINTS)
     }
 
-    private async build(entryPoints: Record<string, string>, useAliases: boolean): Promise<void> {
+    private async build(entryPoints: Record<string, string>): Promise<void> {
         return new Promise((resolve, reject) => {
             webpack({
                 mode: "production",
                 devtool: 'hidden-source-map',
                 resolve: {
-                  extensions: ['.js', '.ts', '.tsx'],
-                  alias: useAliases ? SPECIAL_ALIASES : {},
+                  extensions: ['.js', '.ts', '.tsx']
                 },
                 entry: entryPoints,
                 output: {

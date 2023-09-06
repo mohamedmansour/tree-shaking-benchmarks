@@ -1,4 +1,4 @@
-import { customElement, html, FASTElement } from '@microsoft/fast-element-v3'
+import { customElement, html, FASTElement } from '@microsoft/fast-element'
 
 @customElement({
   name: 'example-app',

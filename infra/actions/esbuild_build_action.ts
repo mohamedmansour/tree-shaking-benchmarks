@@ -3,21 +3,19 @@ import path from 'node:path'
 
 import * as esbuild from 'esbuild'
 
-import { DIST_DIR, ENTRY_POINTS, SPECIAL_ALIASES, SPECIAL_ENTRY_POINTS } from '../config.js'
+import { DIST_DIR, ENTRY_POINTS } from '../config.js'
 import { formatFileSize } from '../utils/format_utils.js'
 import { EsbuildBaseAction } from "./esbuild_base_action.js"
 
 class EsbuildBuildAction extends EsbuildBaseAction {
     async run(): Promise<void> {
-        await this.build(ENTRY_POINTS, /*useAliases=*/true, 'meta.json')
-        await this.build(SPECIAL_ENTRY_POINTS,  /*useAliases=*/true, 'meta-special.json')
+        await this.build(ENTRY_POINTS, 'meta.json')
     }
 
-    private async build(entryPoints: Record<string, string>, useAliases: boolean, metaFileName: string): Promise<void> {
+    private async build(entryPoints: Record<string, string>, metaFileName: string): Promise<void> {
         const results = await esbuild.build({
             ...this.options,
-            entryPoints,
-            alias: useAliases ? SPECIAL_ALIASES : {}
+            entryPoints
         })
         const esbuildDirectory = path.join(DIST_DIR, 'esbuild')
         fs.mkdirSync(esbuildDirectory, { recursive: true })

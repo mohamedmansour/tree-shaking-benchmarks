@@ -6,6 +6,7 @@ import * as esbuild from 'esbuild'
 import { DIST_DIR, ENTRY_POINTS } from '../config.js'
 import { formatFileSize } from '../utils/format_utils.js'
 import { EsbuildBaseAction } from "./esbuild_base_action.js"
+import { copyFolder } from '../utils/file_utils.js'
 
 class EsbuildBuildAction extends EsbuildBaseAction {
     async run(): Promise<void> {
@@ -20,6 +21,8 @@ class EsbuildBuildAction extends EsbuildBaseAction {
         const esbuildDirectory = path.join(DIST_DIR, 'esbuild')
         fs.mkdirSync(esbuildDirectory, { recursive: true })
         fs.writeFileSync(path.join(esbuildDirectory, metaFileName), JSON.stringify(results.metafile, null, 2))
+
+        copyFolder('www/esbuild', 'dist/esbuild')
 
         for (const output in results.metafile?.outputs) {
             const file = results.metafile?.outputs[output]

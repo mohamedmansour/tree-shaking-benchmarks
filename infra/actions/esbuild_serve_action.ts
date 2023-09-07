@@ -1,12 +1,12 @@
 import fs from 'node:fs'
 import http from 'node:http'
-import path from 'node:path'
 import { URL } from 'node:url'
 
 import * as esbuild from 'esbuild'
 
 import { EsbuildBaseAction } from "./esbuild_base_action.js"
 import { ENTRY_POINTS } from '../config.js'
+import { copyFolder } from '../utils/file_utils.js'
 
 class EsbuildServeAction extends EsbuildBaseAction {
     handlerMap: Map<string, (req: http.IncomingMessage, res: http.ServerResponse) => void> = new Map()
@@ -24,7 +24,7 @@ class EsbuildServeAction extends EsbuildBaseAction {
         }
         const context = await esbuild.context(esbuildOptions)
 
-        this.copyFolder('www', 'dist')
+        copyFolder('www', 'dist')
         
         // Add Live Reloading.
         await context.watch()
@@ -98,16 +98,6 @@ class EsbuildServeAction extends EsbuildBaseAction {
         res.end()
     }
     
-    private copyFolder(sourceFolder: string, destinationFolder: string): void {
-        fs.mkdirSync(destinationFolder, { recursive: true })
-        const files = fs.readdirSync(sourceFolder)
-        for (const file of files) {
-            const sourceFilePath = path.join(sourceFolder, file)
-            const destinationFilePath = path.join(destinationFolder, file)
-            fs.copyFileSync(sourceFilePath, destinationFilePath)
-        }
-    }
-
     private deleteFolder(path: string): void {
       if (fs.existsSync(path)) {
         fs.rmSync(path, { recursive: true })

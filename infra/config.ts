@@ -1,4 +1,5 @@
-import path from 'node:path'
+import path from 'node:path';
+import os from 'node:os';
 
 export const ENTRY_POINTS: Record<string, string> = {
     'lit-element': './webuis/lit-element/app.ts',
@@ -7,8 +8,16 @@ export const ENTRY_POINTS: Record<string, string> = {
     'fast-fluent': './webuis/fast-fluent/app.ts',
     'react': './webuis/react/app.tsx',
     'react-fluent': './webuis/react-fluent/app.tsx'
+};
+
+
+let distURLdir = 
+  path.dirname(path.dirname(new URL(import.meta.url).pathname));
+
+if(os.platform() !== 'linux') {
+  distURLdir = distURLdir.substring(1);
 }
 
-export const DIST_DIR = path.dirname(path.dirname(new URL(import.meta.url).pathname)).substring(1)
+export const DIST_DIR = distURLdir;
 
-export const NODE_MODULE_DIR = path.join(DIST_DIR, '../node_modules')
+export const NODE_MODULE_DIR = path.join(DIST_DIR, '../node_modules');

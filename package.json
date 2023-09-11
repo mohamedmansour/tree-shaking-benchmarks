@@ -4,10 +4,11 @@
     "description": "Example App",
     "type": "module",
     "scripts": {
-        "start": "npm run infra-tsc && node dist/infra/infra.js esbuild:serve",
-        "esbuild": "npm run infra-tsc && node dist/infra/infra.js esbuild:build",
+        "start": "node dist/infra/infra.js esbuild:serve",
+        "esbuild": "node dist/infra/infra.js esbuild:build",
+        "bun": "bun infra/infra.ts bun:build",
         "swc": "spack --config ./swcpack.config.cjs",
-        "webpack": "npm run infra-tsc && node dist/infra/infra.js webpack:build",
+        "webpack": "node infra/infra.ts webpack:build",
         "infra-tsc": "tsc -p infra/tsconfig.json",
         "webui-tsc": "tsc -p tsconfig.json"
     },
@@ -35,12 +36,12 @@
         "@types/node": "20.4.8",
         "@types/react": "18.2.20",
         "@types/react-dom": "18.2.7",
+        "bun": "1.0.0",
         "commander": "11.0.0",
         "esbuild": "0.19.2",
         "esbuild-loader": "4.0.0",
         "mini-css-extract-plugin": "2.7.6",
         "typescript": "5.1.6",
-        "webpack": "5.88.2",
-        "webpack-cli": "5.1.4"
+        "webpack": "5.88.2"
     }
 }

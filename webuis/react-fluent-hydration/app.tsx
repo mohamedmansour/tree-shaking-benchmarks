@@ -1,5 +1,5 @@
 import React from 'react';
-import { createRoot } from 'react-dom/client';
+import { hydrateRoot} from 'react-dom/client';
 import { FluentProvider, teamsLightTheme, Button } from '@fluentui/react-components';
 
 function ExampleApp() {
@@ -10,5 +10,4 @@ function ExampleApp() {
 
 
 const container = document.querySelector('example-app')
-const root = createRoot(container!)
-root.render(<ExampleApp />)
+hydrateRoot(container!, <ExampleApp />)

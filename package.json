@@ -1,7 +1,7 @@
 {
-    "name": "example_app",
+    "name": "tree-shaking-benchmarks",
     "version": "1.0.0",
-    "description": "Example App",
+    "description": "Tree Shaking Benchmarks",
     "type": "module",
     "scripts": {
         "start": "node dist/infra/infra.js esbuild:serve",

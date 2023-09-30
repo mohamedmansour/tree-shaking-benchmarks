@@ -21,8 +21,6 @@ export abstract class WebpackBaseAction extends BaseAction {
       output: {
         publicPath: '/dist/',
         filename: '[name].js',
-        chunkFilename: '[id][name].chunk.js',
-        trustedTypes: true,
         chunkFormat: 'module',
         chunkLoading: 'import'
       },

@@ -1,4 +1,5 @@
 import webpack from 'webpack'
+import path from 'node:path'
 
 import { ActionOptions, BaseAction } from './base_action.js'
 import { Stats } from '../utils/stats_utils.js'
@@ -29,16 +30,19 @@ export abstract class WebpackBaseAction extends BaseAction {
         rules: [
           {
             test: /\.[jt]sx?$/,
-            loader: 'esbuild-loader',
-            options: {
-              // tsconfig: 'tsconfig.json',
-            }
+            use: [
+              {
+                loader: 'esbuild-loader',
+                options: {
+                  target: 'esnext',
+                  format: 'esm',
+                  tsconfig: 'tsconfig.json',
+                }
+              }
+            ]
           },
         ],
-      },
-      experiments: {
-        topLevelAwait: true,
-      },
+      }
     }
   }
 

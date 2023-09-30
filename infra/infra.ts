@@ -36,6 +36,7 @@ program.command('all:build').action(async (o) => {
 const availableWebUIs = fs.readdirSync(WEBUIS_DIR)
 program.commands.forEach(cmd => {
   cmd.addOption(new Option('--webui <name>', 'webui name').choices(availableWebUIs))
+  cmd.addOption(new Option('--minify', 'minify the output').default(false));
 })
 
 program.parse(process.argv)

@@ -21,6 +21,9 @@ export abstract class WebpackBaseAction extends BaseAction {
       experiments: {
         outputModule: true
       },
+      optimization: {
+          minimize: this.minify
+      },
       output: {
         publicPath: '/dist/',
         filename: '[name].js',

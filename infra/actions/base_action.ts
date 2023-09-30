@@ -4,9 +4,11 @@ export type ActionOptions = Record<string, string | boolean>
 
 export abstract class BaseAction {
   webui?: string
+  minify?: boolean
 
   constructor(options: ActionOptions) {
     this.webui = options['webui'] as string
+    this.minify = options['minify'] as boolean || false
   }
 
   getEntryPoints(): Record<string, string> {

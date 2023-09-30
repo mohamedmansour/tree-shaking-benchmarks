@@ -9,15 +9,17 @@ export abstract class WebpackBaseAction extends BaseAction {
         super(options)
     }
 
-    printStats(name: string, err: Error | undefined, webpackstats: webpack.Stats | undefined, resolve: (value: void | PromiseLike<void>) => void, reject: (reason?: any) => void) {
+    printStats(name: string, err: Error | undefined, webpackstats: webpack.Stats | undefined, startTime: number, resolve: (value: void | PromiseLike<void>) => void, reject: (reason?: any) => void) {
         if (err || webpackstats?.hasErrors()) {
             reject(err || webpackstats?.compilation.errors)
         } else if (webpackstats) {
+          const duarationInSeconds = (performance.now() - startTime) / 1000
+
           const buildStats = webpackstats.toJson({
             assets: true,
           })
           
-          const stats = new Stats(name)
+          const stats = new Stats(name, duarationInSeconds)
           for (const asset of buildStats.assets || []) {
             stats.add(asset.name, asset.size)
           }

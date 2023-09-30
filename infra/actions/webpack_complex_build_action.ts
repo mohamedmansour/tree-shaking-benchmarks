@@ -20,6 +20,7 @@ class WebpackComplexBuildAction extends WebpackBaseAction {
         copyFolder('www/webpack', 'dist/webpack')
         return new Promise((resolve, reject) => {
           try {
+            const startTime = performance.now()
             webpack({
               mode: "production",
               devtool: 'hidden-source-map',
@@ -76,7 +77,7 @@ class WebpackComplexBuildAction extends WebpackBaseAction {
               plugins: [
                 new MiniCssExtractPlugin(), new GriffelCSSExtractionPlugin()
               ],
-            }, (err, stats) => this.printStats(name, err, stats, resolve, reject))
+            }, (err, stats) => this.printStats(name, err, stats, startTime, resolve, reject))
           } catch(err) {
             reject(err)
           }

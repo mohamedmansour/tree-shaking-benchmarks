@@ -18,10 +18,12 @@ class EsbuildBuildAction extends EsbuildBaseAction {
     }
 
     private async build(entryPoints: Record<string, string>, name: string): Promise<void> {
+        const startTime = performance.now()
         const results = await esbuild.build({
             ...this.options,
             entryPoints
         })
+        const duarationInSeconds = (performance.now() - startTime) / 1000
         const esbuildDirectory = path.join(DIST_DIR, 'esbuild')
         fs.mkdirSync(esbuildDirectory, { recursive: true })
         fs.writeFileSync(path.join(esbuildDirectory, `${name}.meta.json`), JSON.stringify(results.metafile, null, 2))
@@ -29,7 +31,7 @@ class EsbuildBuildAction extends EsbuildBaseAction {
         copyFolder('www/esbuild', 'dist/esbuild')
 
         const found = new Set<string>()
-        const stats = new Stats(name)
+        const stats = new Stats(name, duarationInSeconds)
         
         for (const output in results.metafile?.outputs) {
             const file = results.metafile?.outputs[output]

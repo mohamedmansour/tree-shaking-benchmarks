@@ -18,6 +18,7 @@ class WebpackBuildAction extends WebpackBaseAction {
         copyFolder('www/webpack', 'dist/webpack-simple')
         return new Promise((resolve, reject) => {
           try {
+            const startTime = performance.now()
             webpack({
               mode: "production",
               devtool: 'hidden-source-map',
@@ -51,7 +52,7 @@ class WebpackBuildAction extends WebpackBaseAction {
               experiments: {
                 topLevelAwait: true,
               },
-            }, (err, stats) => this.printStats(name, err, stats, resolve, reject))
+            }, (err, stats) => this.printStats(name, err, stats, startTime, resolve, reject))
           } catch (err) {
             reject(err)
           }

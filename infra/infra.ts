@@ -10,29 +10,26 @@ import { WEBUIS_DIR } from './config.js'
 
 const program = new Command()
 
-function run(func: (options: ActionOptions) => Promise<void>, exit: boolean = true) {
-    return (options: Record<string, boolean>) => {
-        func(options)
-            .then(() => exit && process.exit(0))
+function run(o: ActionOptions, func: (o: ActionOptions) => Promise<void>, exit: boolean = true): Promise<void> {
+    return func(o)
             .catch(e => {
                 console.error(e)
                 process.exit(1)
             })
-    }
 }
 
 program
     .name('Web Performance Infra')
     .description('CLI to build and serve.')
     .version('0.0.1')
-program.command('esbuild:serve').action(run(EsbuildServeAction))
-program.command('esbuild:build').action(run(EsbuildBuildAction))
-program.command('webpack:build').action(run(WebpackBuildAction))
-program.command('webpackcomplex:build').action(run(WebpackComplexBuildAction))
-program.command('all:build').action((options) => {
-    run(EsbuildBuildAction, false)(options)
-    run(WebpackBuildAction, false)(options)
-    run(WebpackComplexBuildAction, false)(options)
+program.command('esbuild:serve').action(async (o) => await run(o, EsbuildServeAction))
+program.command('esbuild:build').action(async (o) => await run(o, EsbuildBuildAction))
+program.command('webpack:build').action(async (o) => await run(o, WebpackBuildAction))
+program.command('webpackcomplex:build').action(async (o) => await run(o, WebpackComplexBuildAction))
+program.command('all:build').action(async (o) => {
+    await run(o, EsbuildBuildAction, false)
+    await run(o, WebpackBuildAction, false)
+    await run(o, WebpackComplexBuildAction, false)
 })
 
 const availableWebUIs = fs.readdirSync(WEBUIS_DIR)

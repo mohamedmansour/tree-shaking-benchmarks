@@ -30,7 +30,7 @@ export abstract class WebpackBaseAction extends BaseAction {
         chunkFormat: 'module',
         chunkLoading: 'import',
         module: true,
-        clean: true
+        clean: false  // Dont' clean since this is being managed in infra.
       },
       module: {
         rules: [

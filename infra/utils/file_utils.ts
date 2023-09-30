@@ -7,6 +7,10 @@ export function copyFolder(sourceFolder: string, destinationFolder: string): voi
     for (const file of files) {
         const sourceFilePath = path.join(sourceFolder, file)
         const destinationFilePath = path.join(destinationFolder, file)
-        fs.copyFileSync(sourceFilePath, destinationFilePath)
+        if (fs.statSync(sourceFilePath).isDirectory()) {
+            copyFolder(sourceFilePath, destinationFilePath)
+        } else {
+            fs.copyFileSync(sourceFilePath, destinationFilePath)
+        }
     }
 }

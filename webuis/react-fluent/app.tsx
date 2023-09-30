@@ -1,6 +1,6 @@
-import React from 'react';
-import { createRoot } from 'react-dom/client';
-import { FluentProvider, teamsLightTheme, Button } from '@fluentui/react-components';
+import React from 'react'
+import { createRoot } from 'react-dom/client'
+import { FluentProvider, teamsLightTheme, Button } from '@fluentui/react-components'
 
 function ExampleApp() {
   return <FluentProvider theme={teamsLightTheme}>

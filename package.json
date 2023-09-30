@@ -5,9 +5,11 @@
     "type": "module",
     "scripts": {
         "start": "node dist/infra/infra.js esbuild:serve",
+        "build": "node dist/infra/infra.js all:build",
         "esbuild": "node dist/infra/infra.js esbuild:build",
         "swc": "spack --config ./swcpack.config.cjs",
         "webpack": "node dist/infra/infra.js webpack:build",
+        "webpack-complex": "node dist/infra/infra.js webpackcomplex:build",
         "infra-tsc": "tsc -p infra/tsconfig.json",
         "webui-tsc": "tsc -p tsconfig.json"
     },

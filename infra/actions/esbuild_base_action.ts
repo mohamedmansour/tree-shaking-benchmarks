@@ -1,13 +1,15 @@
 import * as esbuild from 'esbuild'
+import { ActionOptions, BaseAction } from './base_action.js'
 
-export abstract class EsbuildBaseAction {
+export abstract class EsbuildBaseAction extends BaseAction {
     options: esbuild.BuildOptions
 
-    constructor() {
-        this.options  = {
+    constructor(options: ActionOptions) {
+        super(options)
+        this.options = {
             bundle: true,
-            // splitting: true,
-            outdir: 'dist/esbuild',
+            splitting: true,
+            outdir: 'dist/esbuild/',
             format: 'esm',
             minify: true,
             target: 'esnext',
@@ -16,6 +18,4 @@ export abstract class EsbuildBaseAction {
             metafile: true
         }
     }
-
-    abstract run(): Promise<void>
 }

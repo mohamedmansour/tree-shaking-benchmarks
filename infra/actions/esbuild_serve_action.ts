@@ -4,15 +4,15 @@ import { URL } from 'node:url'
 
 import * as esbuild from 'esbuild'
 
-import { EsbuildBaseAction } from "./esbuild_base_action.js"
-import { ENTRY_POINTS } from '../config.js'
+import { EsbuildBaseAction } from './esbuild_base_action.js'
 import { copyFolder } from '../utils/file_utils.js'
+import { ActionOptions } from './base_action.js'
 
 class EsbuildServeAction extends EsbuildBaseAction {
     handlerMap: Map<string, (req: http.IncomingMessage, res: http.ServerResponse) => void> = new Map()
 
-    constructor() {
-        super()
+    constructor(options: ActionOptions) {
+        super(options)
         this.handlerMap.set('/api', (req, res) => this.handleApi(req, res))
     }
     
@@ -20,7 +20,7 @@ class EsbuildServeAction extends EsbuildBaseAction {
         // Build the app.
         const esbuildOptions: esbuild.BuildOptions = {
             ...this.options,
-            entryPoints: ENTRY_POINTS
+            entryPoints: this.getEntryPoints()
         }
         const context = await esbuild.context(esbuildOptions)
 
@@ -105,7 +105,7 @@ class EsbuildServeAction extends EsbuildBaseAction {
     }
 }
 
-export default function(): Promise<void> {
-    const action = new EsbuildServeAction()
+export default function(options: ActionOptions): Promise<void> {
+    const action = new EsbuildServeAction(options)
     return action.run()
 }

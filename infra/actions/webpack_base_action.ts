@@ -19,25 +19,15 @@ export abstract class WebpackBaseAction extends BaseAction {
         }
       },
       experiments: {
-        outputModule: true,
-        topLevelAwait: true
+        outputModule: true
       },
       output: {
         publicPath: '/dist/',
         filename: '[name].js',
         chunkFormat: 'module',
         chunkLoading: 'import',
-        environment: {
-          module: true,
-          dynamicImport: true,
-          dynamicImportInWorker: true,
-          destructuring: true,
-          bigIntLiteral: true
-        },
-        library: {
-          type: 'module'
-        },
-        module: true
+        module: true,
+        clean: true
       },
       module: {
         rules: [

@@ -20,7 +20,7 @@ class EsbuildBuildAction extends EsbuildBaseAction {
   private async build(entryPoints: Record<string, string>, name: string): Promise<void> {
     const startTime = performance.now()
     const results = await esbuild.build({
-      ...this.options,
+      ...this.config,
       entryPoints
     })
     const duarationInSeconds = (performance.now() - startTime) / 1000
@@ -36,7 +36,7 @@ class EsbuildBuildAction extends EsbuildBaseAction {
     for (const output in results.metafile?.outputs) {
       const file = results.metafile?.outputs[output]
       if (file.entryPoint) {
-        const normalizedOutput = path.normalize(output.replace(this.options.outdir as string, ''))
+        const normalizedOutput = path.normalize(output.replace(this.config.outdir as string, ''))
         if (found.has(normalizedOutput)) {
           continue
         }
@@ -44,7 +44,7 @@ class EsbuildBuildAction extends EsbuildBaseAction {
         stats.add(normalizedOutput, file.bytes)
 
         file.imports.forEach((imported) => {
-          const normalizedImport = path.normalize(imported.path.replace(this.options.outdir as string, ''))
+          const normalizedImport = path.normalize(imported.path.replace(this.config.outdir as string, ''))
           if (found.has(normalizedImport)) {
             return
           }

@@ -29,7 +29,7 @@ program.command('webpackcomplex:build').action(async (o) => await run(o, Webpack
 program.command('all:build').action(async (o) => {
   await run(o, EsbuildBuildAction, false)
   await run(o, WebpackBuildAction, false)
-  await run(o, WebpackComplexBuildAction, false)
+  // await run(o, WebpackComplexBuildAction, false)
   process.exit(0)
 })
 

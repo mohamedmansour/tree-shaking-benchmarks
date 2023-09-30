@@ -15,44 +15,19 @@ class WebpackBuildAction extends WebpackBaseAction {
   }
 
   private async build(entryPoints: Record<string, string>, name: string): Promise<void> {
-    copyFolder('www/webpack', 'dist/webpack-simple')
+    copyFolder('www/webpack', 'dist/webpack')
     return new Promise((resolve, reject) => {
       try {
         const startTime = performance.now()
-        webpack({
-          mode: "production",
-          devtool: 'hidden-source-map',
-          resolve: {
-            extensions: ['.js', '.ts', '.tsx'],
-            extensionAlias: {
-              '.js': ['.ts', '.js'],
-            }
-          },
+        const config: webpack.Configuration = {
+          ...this.config,
           entry: entryPoints,
           output: {
+            ...this.config.output,
             path: path.join(DIST_DIR, 'webpack'),
-            publicPath: '/dist/',
-            filename: '[name].js',
-            chunkFilename: '[id][name].chunk.js',
-            trustedTypes: true,
-            chunkFormat: 'module',
-            chunkLoading: 'import'
-          },
-          module: {
-            rules: [
-              {
-                test: /\.[jt]sx?$/,
-                loader: 'esbuild-loader',
-                options: {
-                  // tsconfig: 'tsconfig.json',
-                }
-              },
-            ],
-          },
-          experiments: {
-            topLevelAwait: true,
-          },
-        }, (err, stats) => this.printStats(name, err, stats, startTime, resolve, reject))
+          }
+        }
+        webpack(config, (err, stats) => this.printStats(name, err, stats, startTime, resolve, reject))
       } catch (err) {
         reject(err)
       }

@@ -17,29 +17,24 @@ class WebpackComplexBuildAction extends WebpackBaseAction {
   }
 
   private async build(entryPoints: Record<string, string>, name: string): Promise<void> {
-    copyFolder('www/webpack', 'dist/webpack')
+    copyFolder('www/webpack', 'dist/webpack-complex')
     return new Promise((resolve, reject) => {
       try {
         const startTime = performance.now()
-        webpack({
-          mode: "production",
-          devtool: 'hidden-source-map',
-          resolve: {
-            extensions: ['.js', '.ts', '.tsx'],
-            extensionAlias: {
-              '.js': ['.ts', '.js'],
-            }
-          },
+        const config: webpack.Configuration = {
+          ...this.config,
           entry: entryPoints,
           output: {
-            path: path.join(DIST_DIR, 'webpack'),
-            publicPath: '/dist/',
-            filename: '[name].js',
-            chunkFilename: '[name].chunk.js',
-            trustedTypes: true,
+            ...this.config.output,
+            path: path.join(DIST_DIR, 'webpack-complex'),
           },
+          plugins: [
+            new MiniCssExtractPlugin(), new GriffelCSSExtractionPlugin()
+          ],
           module: {
+            ...this.config.module,
             rules: [
+              ...this.config.module!.rules!,
               {
                 test: /\.(js|ts|tsx)$/,
                 use: {
@@ -62,22 +57,10 @@ class WebpackComplexBuildAction extends WebpackBaseAction {
                 test: /\.css$/,
                 use: [MiniCssExtractPlugin.loader, 'css-loader'],
               },
-              {
-                test: /\.[jt]sx?$/,
-                loader: 'esbuild-loader',
-                options: {
-                  // tsconfig: 'tsconfig.json',
-                }
-              },
-            ],
-          },
-          experiments: {
-            topLevelAwait: true,
-          },
-          plugins: [
-            new MiniCssExtractPlugin(), new GriffelCSSExtractionPlugin()
-          ],
-        }, (err, stats) => this.printStats(name, err, stats, startTime, resolve, reject))
+            ]
+          }
+        }
+        webpack(config, (err, stats) => this.printStats(name, err, stats, startTime, resolve, reject))
       } catch (err) {
         reject(err)
       }

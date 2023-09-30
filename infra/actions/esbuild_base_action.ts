@@ -2,11 +2,11 @@ import * as esbuild from 'esbuild'
 import { ActionOptions, BaseAction } from './base_action.js'
 
 export abstract class EsbuildBaseAction extends BaseAction {
-  options: esbuild.BuildOptions
+  config: esbuild.BuildOptions
 
   constructor(options: ActionOptions) {
     super(options)
-    this.options = {
+    this.config = {
       bundle: true,
       splitting: true,
       outdir: 'dist/esbuild/',

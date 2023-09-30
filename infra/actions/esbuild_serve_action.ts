@@ -19,7 +19,7 @@ class EsbuildServeAction extends EsbuildBaseAction {
   async run(): Promise<void> {
     // Build the app.
     const esbuildOptions: esbuild.BuildOptions = {
-      ...this.options,
+      ...this.config,
       entryPoints: this.getEntryPoints()
     }
     const context = await esbuild.context(esbuildOptions)

@@ -9,8 +9,7 @@ export const ENTRY_POINTS: Record<string, string> = {
   'fast-fluent': './webuis/fast-fluent/app.ts',
   'react': './webuis/react/app.tsx',
   'react-fluent': './webuis/react-fluent/app.tsx',
-  // TODO: need fixing.
-  // 'react-fluent-hydration': './webuis/react-fluent-hydration/app.tsx',
+  'react-fluent-hydration': './webuis/react-fluent-hydration/app.tsx',
 }
 
 

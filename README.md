@@ -2,7 +2,7 @@
 
 The purpose of this repo is to compare different Web Framework / Library tree-shaking abilities, build time speed, and bundle size by importing a single `Button` component. 
 
-## On etime setup
+## One time setup
 1. Set up pnpm: Open powershell, run `iwr https://get.pnpm.io/install.ps1 -useb | iex`
 2. Open a new terminal/restart vscode to ensure the newly stalled pnpm is on the path
 3. Install dependencies: cd to your browser-vnext folder: run `pnpm intall`

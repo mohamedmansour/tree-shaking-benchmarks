@@ -33,8 +33,8 @@ program.command('webpack:build').action(async (o) => await run(o, './actions/web
 program.command('bun:build').action(async (o) => await run(o, './actions/bun_build_action.js'))
 program.command('webpackcomplex:build').action(async (o) => await run(o, './actions/webpack_complex_build_action.js'))
 program.command('all:build').action(async (o) => {
-  await run(o, './actions/esbuild_serve_action.js', /*skip_exit=*/true)
   await run(o, './actions/esbuild_build_action.js', /*skip_exit=*/true)
+  await run(o, './actions/webpack_build_action.js', /*skip_exit=*/true)
   if (IS_TYPESCRIPT_ENV) {
     await run(o, './actions/bun_build_action.js', /*skip_exit=*/true)
   }

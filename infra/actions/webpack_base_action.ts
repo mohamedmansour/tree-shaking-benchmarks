@@ -41,8 +41,7 @@ export abstract class WebpackBaseAction extends BaseAction {
                 loader: 'esbuild-loader',
                 options: {
                   target: 'esnext',
-                  format: 'esm',
-                  tsconfig: 'tsconfig.json',
+                  format: 'esm'
                 }
               }
             ]
@@ -52,17 +51,20 @@ export abstract class WebpackBaseAction extends BaseAction {
     }
   }
 
-  printStats(name: string, err: Error | undefined, webpackstats: webpack.Stats | undefined, startTime: number, resolve: (value: void | PromiseLike<void>) => void, reject: (reason?: any) => void) {
-    if (err || webpackstats?.hasErrors()) {
-      reject(err || webpackstats?.compilation.errors)
-    } else if (webpackstats) {
-      const duarationInSeconds = (performance.now() - startTime) / 1000
+  canFormatESM(entryPoint: string): boolean {
+    return !['react-fluent', 'react-fluent-hydration'].includes(entryPoint)
+  }
 
-      const buildStats = webpackstats.toJson({
+  printStats(name: string, err: Error | undefined, metadata: webpack.Stats | undefined, stats: Stats, resolve: (value: void | PromiseLike<void>) => void, reject: (reason?: any) => void) {
+    if (err || metadata?.hasErrors()) {
+      reject(err || metadata?.compilation.errors)
+    } else if (metadata) {
+      stats.done()
+      
+      const buildStats = metadata.toJson({
         assets: true,
       })
 
-      const stats = new Stats(name, duarationInSeconds)
       for (const asset of buildStats.assets || []) {
         stats.add(asset.name, asset.size)
       }

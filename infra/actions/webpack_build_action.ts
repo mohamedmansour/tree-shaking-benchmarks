@@ -27,6 +27,16 @@ class WebpackBuildAction extends WebpackBaseAction {
             path: path.join(DIST_DIR, 'webpack'),
           }
         }
+
+        // Bug where we cannot format esm for react fluent apps.
+        if (!this.canFormatESM(Object.keys(entryPoints)[0])) {
+          config!.module!.rules!.forEach((rule: any) => {
+              rule.use.forEach((use: any) => {
+                use.options.format = undefined;
+              });
+          });
+        }
+
         webpack(config, (err, stats) => this.printStats(name, err, stats, startTime, resolve, reject))
       } catch (err) {
         reject(err)

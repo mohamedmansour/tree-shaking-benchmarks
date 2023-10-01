@@ -40,7 +40,8 @@ export abstract class WebpackBaseAction extends BaseAction {
               {
                 loader: 'esbuild-loader',
                 options: {
-                  target: 'esnext'
+                  target: 'esnext',
+                  format: 'esm'
                 }
               }
             ]
@@ -48,6 +49,10 @@ export abstract class WebpackBaseAction extends BaseAction {
         ],
       }
     }
+  }
+
+  canFormatESM(entryPoint: string): boolean {
+    return !['react-fluent', 'react-fluent-hydration'].includes(entryPoint)
   }
 
   printStats(name: string, err: Error | undefined, webpackstats: webpack.Stats | undefined, startTime: number, resolve: (value: void | PromiseLike<void>) => void, reject: (reason?: any) => void) {

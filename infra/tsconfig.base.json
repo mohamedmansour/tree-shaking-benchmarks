@@ -10,6 +10,9 @@
       "strict": true,                       // Security Needed.
       "isolatedModules": true,              // Avoid mis-compilation with features like re-exporting types.
       "esModuleInterop": true,              // Make type system compatible with ESM imports.
+      "moduleDetection": "force",           // Force module detection to avoid issues with ESM.
+      "forceConsistentCasingInFileNames": true,
+      "types": ["bun-types"]
     }
   }
   

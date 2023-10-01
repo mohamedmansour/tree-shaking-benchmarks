@@ -1,6 +1,12 @@
 import path from 'node:path'
 import fs from 'node:fs'
 
+export function getFileSizeInBytes(path: string): number {
+  const stats = fs.statSync(path)
+  const fileSizeInBytes = stats.size
+  return fileSizeInBytes
+}
+
 export function copyFolder(sourceFolder: string, destinationFolder: string): void {
   fs.mkdirSync(destinationFolder, { recursive: true })
   const files = fs.readdirSync(sourceFolder)

@@ -14,7 +14,7 @@ export class Stats {
   }
 
   print() {
-    console.log(`Built ${this.name} (${this.formatFileSize(this.totalSize)}) in ${this.durationInSeconds.toFixed(2)}s`)
+    console.log(`Built ${this.name} (${this.formatFileSize(this.totalSize)}) in ${this.durationInSeconds.toFixed(3)}s`)
     if (this.data.length > 1) {
       for (const stat of this.data) {
         console.log(`  ${stat.path} (${this.formatFileSize(stat.size)})`)

@@ -5,7 +5,7 @@ import * as esbuild from 'esbuild'
 
 import { DIST_DIR } from '../config.js'
 import { EsbuildBaseAction } from './esbuild_base_action.js'
-import { copyFolder } from '../utils/file_utils.js'
+import { copyFolder, getFileSizeInBytes } from '../utils/file_utils.js'
 import { ActionOptions } from './base_action.js'
 import { Stats } from '../utils/stats_utils.js'
 
@@ -50,20 +50,13 @@ class EsbuildBuildAction extends EsbuildBaseAction {
           }
           found.add(normalizedImport)
           if (imported.path.search('node_modules') === -1) {
-            const size = this.getFileSizeInBytes(imported.path)
-            stats.add(normalizedImport, size)
+            stats.add(normalizedImport, getFileSizeInBytes(imported.path))
           }
         })
       }
     }
 
     stats.print()
-  }
-
-  private getFileSizeInBytes(path: string): number {
-    const stats = fs.statSync(path)
-    const fileSizeInBytes = stats.size
-    return fileSizeInBytes
   }
 }
 

@@ -7,8 +7,6 @@ function ExampleApp() {
     <Button>Fluent React</Button>
   </FluentProvider>
 }
-
-
 const container = document.querySelector('example-app')
 const root = createRoot(container!)
 root.render(<ExampleApp />)

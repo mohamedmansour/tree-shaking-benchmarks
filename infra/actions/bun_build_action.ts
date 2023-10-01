@@ -1,11 +1,5 @@
-import fs, { statSync } from 'node:fs'
 import path from 'node:path'
-
-import * as esbuild from 'esbuild'
-
-import { DIST_DIR } from '../config.js'
-import { EsbuildBaseAction } from './esbuild_base_action.js'
-import { copyFolder, getFileSizeInBytes } from '../utils/file_utils.js'
+import { getFileSizeInBytes } from '../utils/file_utils.js'
 import { ActionOptions, BaseAction } from './base_action.js'
 import { Stats } from '../utils/stats_utils.js'
 

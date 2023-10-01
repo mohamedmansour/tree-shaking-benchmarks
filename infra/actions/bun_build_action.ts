@@ -12,9 +12,10 @@ class BunBuildAction extends BaseAction {
   }
 
   private async build(entryPoints: Record<string, string>, name: string): Promise<void> {
-    const startTime = performance.now()
     const entryPoint = Object.values(entryPoints)[0]
     const webuiName = path.dirname(entryPoint)
+    const stats = new Stats(name)
+    
     const response = await Bun.build({
       entrypoints: [entryPoint],
       minify: {
@@ -33,9 +34,9 @@ class BunBuildAction extends BaseAction {
       outdir: 'dist/bun/',
       splitting: true,
     })
-    
-    const duarationInSeconds = (performance.now() - startTime) / 1000
-    const stats = new Stats(name, duarationInSeconds)
+
+    stats.done()
+
     response.outputs.forEach((output) => {
       if (output.kind !== 'sourcemap') {
         stats.add(output.path, getFileSizeInBytes(output.path))

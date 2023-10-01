@@ -3,9 +3,9 @@ import webpack from 'webpack'
 
 import { DIST_DIR } from '../config.js'
 import { copyFolder } from '../utils/file_utils.js'
+import { Stats } from '../utils/stats_utils.js'
 import { WebpackBaseAction } from './webpack_base_action.js'
 import { ActionOptions } from './base_action.js'
-
 class WebpackBuildAction extends WebpackBaseAction {
   async run(): Promise<void> {
     const entryPoints = this.getEntryPoints()
@@ -18,7 +18,6 @@ class WebpackBuildAction extends WebpackBaseAction {
     copyFolder('www/webpack', 'dist/webpack')
     return new Promise((resolve, reject) => {
       try {
-        const startTime = performance.now()
         const config: webpack.Configuration = {
           ...this.config,
           entry: entryPoints,
@@ -37,7 +36,8 @@ class WebpackBuildAction extends WebpackBaseAction {
           });
         }
 
-        webpack(config, (err, stats) => this.printStats(name, err, stats, startTime, resolve, reject))
+        const stats = new Stats(name)
+        webpack(config, (err, metadata) => this.printStats(name, err, metadata, stats, resolve, reject))
       } catch (err) {
         reject(err)
       }

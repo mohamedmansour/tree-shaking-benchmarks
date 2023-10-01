@@ -1,7 +1,7 @@
 {
     "compilerOptions": {
       "target": "esnext",                   // Latest JS Standard.
-      "module": "esnext",                   // ESModules support.
+      "module": "Node16",                   // ESModules support.
       "moduleResolution": "Node16",         // NodeJS module resolution.
       "experimentalDecorators": true,       // To support FAST decorators.
       "useDefineForClassFields": false,     // To support FAST observables.

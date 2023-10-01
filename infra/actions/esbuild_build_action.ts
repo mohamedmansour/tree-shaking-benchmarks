@@ -18,37 +18,27 @@ class EsbuildBuildAction extends EsbuildBaseAction {
   }
 
   private async build(entryPoints: Record<string, string>, name: string): Promise<void> {
-    const startTime = performance.now()
+    const stats = new Stats(name)
     const results = await esbuild.build({
       ...this.config,
       entryPoints
     })
-    const duarationInSeconds = (performance.now() - startTime) / 1000
+    stats.done()
+
     const esbuildDirectory = path.join(DIST_DIR, 'esbuild')
     fs.mkdirSync(esbuildDirectory, { recursive: true })
     fs.writeFileSync(path.join(esbuildDirectory, `${name}.meta.json`), JSON.stringify(results.metafile, null, 2))
 
     copyFolder('www/esbuild', 'dist/esbuild')
 
-    const found = new Set<string>()
-    const stats = new Stats(name, duarationInSeconds)
-
     for (const output in results.metafile?.outputs) {
       const file = results.metafile?.outputs[output]
       if (file.entryPoint) {
         const normalizedOutput = path.normalize(output.replace(this.config.outdir as string, ''))
-        if (found.has(normalizedOutput)) {
-          continue
-        }
-        found.add(normalizedOutput)
         stats.add(normalizedOutput, file.bytes)
 
         file.imports.forEach((imported) => {
           const normalizedImport = path.normalize(imported.path.replace(this.config.outdir as string, ''))
-          if (found.has(normalizedImport)) {
-            return
-          }
-          found.add(normalizedImport)
           if (imported.path.search('node_modules') === -1) {
             stats.add(normalizedImport, getFileSizeInBytes(imported.path))
           }

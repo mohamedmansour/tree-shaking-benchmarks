@@ -2,6 +2,7 @@ import path from 'node:path'
 import { getFileSizeInBytes } from '../utils/file_utils.js'
 import { ActionOptions, BaseAction } from './base_action.js'
 import { Stats } from '../utils/stats_utils.js'
+import { WEBUIS_DIR } from '../config.js'
 
 class BunBuildAction extends BaseAction {
   async run(): Promise<void> {
@@ -39,7 +40,7 @@ class BunBuildAction extends BaseAction {
 
     response.outputs.forEach((output) => {
       if (output.kind !== 'sourcemap') {
-        stats.add(output.path, getFileSizeInBytes(output.path))
+        stats.add(path.basename(output.path, WEBUIS_DIR), getFileSizeInBytes(output.path))
       }
     })
     stats.print()

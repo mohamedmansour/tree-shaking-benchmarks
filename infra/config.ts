@@ -1,5 +1,4 @@
 import path from 'node:path'
-import os from 'node:os'
 
 export const ENTRY_POINTS: Record<string, string> = {
   'dynamic': './webuis/dynamic/test.ts',
@@ -12,20 +11,13 @@ export const ENTRY_POINTS: Record<string, string> = {
   'react-fluent-hydration': './webuis/react-fluent-hydration/app.tsx',
 }
 
+const distURLdir = path.dirname(path.dirname(new URL(import.meta.url).pathname))
+  .replace(/^\/([a-z]):\//i, '$1:/') // convert Windows path to drive letter format
 
-let distURLdir =
-  path.dirname(path.dirname(new URL(import.meta.url).pathname))
+const isTypeScriptEnv = path.extname(import.meta.url) === '.ts'
 
-if (os.platform() !== 'linux') {
-  distURLdir = distURLdir.substring(1)
-}
-
-export const DIST_DIR = distURLdir
-
-export const ROOT_DIR = path.join(DIST_DIR, '..')
-
-export const NODE_MODULE_DIR = path.join(ROOT_DIR, 'node_modules')
-
-export const WWW_DIR = path.join(ROOT_DIR, 'www')
-
-export const WEBUIS_DIR = path.join(ROOT_DIR, 'webuis')
+export const DIST_DIR = isTypeScriptEnv ? path.resolve(distURLdir, 'dist') : distURLdir
+export const ROOT_DIR = path.resolve(DIST_DIR, '..')
+export const NODE_MODULE_DIR = path.resolve(ROOT_DIR, 'node_modules')
+export const WWW_DIR = path.resolve(ROOT_DIR, 'www')
+export const WEBUIS_DIR = path.resolve(ROOT_DIR, 'webuis')

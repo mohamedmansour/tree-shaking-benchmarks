@@ -40,9 +40,7 @@ export abstract class WebpackBaseAction extends BaseAction {
               {
                 loader: 'esbuild-loader',
                 options: {
-                  target: 'esnext',
-                  format: 'esm',
-                  tsconfig: 'tsconfig.json',
+                  target: 'esnext'
                 }
               }
             ]

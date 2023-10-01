@@ -6,7 +6,7 @@ export class Stats {
   private data: StatInfo[] = []
   private totalSize = 0
   private startTime: number = 0
-  private durationInSeconds: number | undefined
+  private durationInMilliseconds: number | undefined
   private visited = new Set<string>()
 
   constructor(private name: string) {
@@ -27,15 +27,15 @@ export class Stats {
   }
 
   done() {
-    this.durationInSeconds = (performance.now() - this.startTime) / 1000
+    this.durationInMilliseconds = (performance.now() - this.startTime)
   }
 
   print() {
-    if (!this.durationInSeconds) {
+    if (!this.durationInMilliseconds) {
       this.done()
     }
 
-    console.log(`Built ${this.name} (${this.formatFileSize(this.totalSize)}) in ${this.durationInSeconds!.toFixed(3)}s`)
+    console.log(`Built ${this.name} (${this.formatFileSize(this.totalSize)}) in ${this.durationInMilliseconds!.toFixed(3)}ms`)
     if (this.data.length > 1) {
       for (const stat of this.data) {
         console.log(`  ${stat.path} (${this.formatFileSize(stat.size)})`)

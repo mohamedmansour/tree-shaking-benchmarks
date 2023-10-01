@@ -16,7 +16,7 @@ async function run(o: ActionOptions, action_clazz: string, skip_exit: boolean = 
     errorOccurred = true;
   } finally {
     const end = performance.now();
-    console.log(`Done in ${(end - start).toFixed(2)}ms`);
+    console.log(`Total runtime in ${(end - start).toFixed(2)}ms\n`);
     if (!skip_exit) {
       process.exit(errorOccurred ? 1 : 0);
     }

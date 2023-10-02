@@ -1,4 +1,5 @@
 import { ENTRY_POINTS } from '../config.js'
+import { StatResult } from '../utils/stats_utils.js'
 
 export type ActionOptions = Record<string, string | boolean>
 
@@ -24,6 +25,16 @@ export abstract class BaseAction {
       [this.webui]: ENTRY_POINTS[this.webui]
     }
   }
+  
+  public run() {
+    const entryPoints = this.getEntryPoints()
+    const runners = []
+    for (const entryPoint in entryPoints) {
+      runners.push(this.build({ [entryPoint]: entryPoints[entryPoint] }, `${this.getActionName()}-${entryPoint}`))
+    }
+    return Promise.all(runners)
+  }
 
-  abstract run(): Promise<void>
+  abstract getActionName(): string
+  abstract build(entryPoints: Record<string, string>, name: string): Promise<StatResult>
 }

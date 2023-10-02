@@ -1,18 +1,15 @@
 import path from 'node:path'
 import { getFileSizeInBytes } from '../utils/file_utils.js'
 import { ActionOptions, BaseAction } from './base_action.js'
-import { Stats } from '../utils/stats_utils.js'
+import { StatResult, Stats } from '../utils/stats_utils.js'
 import { WEBUIS_DIR } from '../config.js'
 
 class BunBuildAction extends BaseAction {
-  async run(): Promise<void> {
-    const entryPoints = this.getEntryPoints()
-    for (const entryPoint in entryPoints) {
-      await this.build({ [entryPoint]: entryPoints[entryPoint] }, `bun-${entryPoint}`)
-    }
+  public getActionName(): string {
+    return 'bun'
   }
 
-  private async build(entryPoints: Record<string, string>, name: string): Promise<void> {
+  public async build(entryPoints: Record<string, string>, name: string): Promise<StatResult> {
     const entryPoint = Object.values(entryPoints)[0]
     const webuiName = path.dirname(entryPoint)
     const stats = new Stats(name)
@@ -43,11 +40,12 @@ class BunBuildAction extends BaseAction {
         stats.add(path.basename(output.path, WEBUIS_DIR), getFileSizeInBytes(output.path))
       }
     })
-    stats.print()
+
+    return stats.data
   }
 }
 
-export default function (options: ActionOptions): Promise<void> {
+export default function (options: ActionOptions): Promise<Array<StatResult>> {
   const action = new BunBuildAction(options)
   return action.run()
 }

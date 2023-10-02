@@ -7,17 +7,14 @@ import { DIST_DIR } from '../config.js'
 import { EsbuildBaseAction } from './esbuild_base_action.js'
 import { copyFolder, getFileSizeInBytes } from '../utils/file_utils.js'
 import { ActionOptions } from './base_action.js'
-import { Stats } from '../utils/stats_utils.js'
+import { Stats, StatResult } from '../utils/stats_utils.js'
 
 class EsbuildBuildAction extends EsbuildBaseAction {
-  async run(): Promise<void> {
-    const entryPoints = this.getEntryPoints()
-    for (const entryPoint in entryPoints) {
-      await this.build({ [entryPoint]: entryPoints[entryPoint] }, `esbuild-${entryPoint}`)
-    }
+  public getActionName(): string {
+    return 'esbuild'
   }
 
-  private async build(entryPoints: Record<string, string>, name: string): Promise<void> {
+  public async build(entryPoints: Record<string, string>, name: string): Promise<StatResult> {
     const stats = new Stats(name)
     const results = await esbuild.build({
       ...this.config,
@@ -46,11 +43,11 @@ class EsbuildBuildAction extends EsbuildBaseAction {
       }
     }
 
-    stats.print()
+    return stats.data
   }
 }
 
-export default function (options: ActionOptions): Promise<void> {
+export default function (options: ActionOptions): Promise<Array<StatResult>> {
   const action = new EsbuildBuildAction(options)
   return action.run()
 }

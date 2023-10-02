@@ -2,7 +2,7 @@ import webpack from 'webpack'
 import path from 'node:path'
 
 import { ActionOptions, BaseAction } from './base_action.js'
-import { Stats } from '../utils/stats_utils.js'
+import { StatResult, Stats } from '../utils/stats_utils.js'
 
 export abstract class WebpackBaseAction extends BaseAction {
   config: webpack.Configuration
@@ -55,7 +55,7 @@ export abstract class WebpackBaseAction extends BaseAction {
     return !['react-fluent', 'react-fluent-hydration'].includes(entryPoint)
   }
 
-  printStats(name: string, err: Error | undefined, metadata: webpack.Stats | undefined, stats: Stats, resolve: (value: void | PromiseLike<void>) => void, reject: (reason?: any) => void) {
+  printStats(name: string, err: Error | undefined, metadata: webpack.Stats | undefined, stats: Stats, resolve: (value: StatResult | PromiseLike<StatResult>) => void, reject: (reason?: any) => void) {
     if (err || metadata?.hasErrors()) {
       reject(err || metadata?.compilation.errors)
     } else if (metadata) {
@@ -69,8 +69,7 @@ export abstract class WebpackBaseAction extends BaseAction {
         stats.add(asset.name, asset.size)
       }
 
-      stats.print()
-      resolve()
+      resolve(stats.data)
     } else {
       reject('No stats object!')
     }

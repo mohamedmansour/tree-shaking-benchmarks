@@ -3,9 +3,14 @@ import * as esbuild from 'esbuild'
 import { EsbuildBaseAction } from './esbuild_base_action.js'
 import { copyFolder } from '../utils/file_utils.js'
 import { ActionOptions } from './base_action.js'
+import { StatResult, Stats } from '../utils/stats_utils.js'
 
 class EsbuildServeAction extends EsbuildBaseAction {
-  async run(): Promise<void> {
+  getActionName(): string {
+    return 'esbuild-serve'
+  }
+  
+  override async run(): Promise<Array<StatResult>> {
     // Build the app.
     const esbuildOptions: esbuild.BuildOptions = {
       ...this.config,
@@ -25,6 +30,12 @@ class EsbuildServeAction extends EsbuildBaseAction {
     })
 
     console.log(`[  ready] http://${host}:${port}/`)
+    
+    return []
+  }
+
+  build(_entryPoints: Record<string, string>, _name: string): Promise<StatResult> {
+    throw new Error('Method not implemented.')
   }
 
   private onEsbuildRequest(args: esbuild.ServeOnRequestArgs) {
@@ -32,7 +43,7 @@ class EsbuildServeAction extends EsbuildBaseAction {
   }
 }
 
-export default function (options: ActionOptions): Promise<void> {
+export default function (options: ActionOptions): Promise<Array<StatResult>> {
   const action = new EsbuildServeAction(options)
   return action.run()
 }

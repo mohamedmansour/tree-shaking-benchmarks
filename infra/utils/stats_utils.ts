@@ -1,50 +1,74 @@
-interface StatInfo {
+export interface StatInfo {
   path: string
   size: number
 }
+
+export interface StatResult {
+  name: string
+  stats: StatInfo[]
+  totalSizeInKilobytes: number
+  durationInMilliseconds: number
+}
+
 export class Stats {
-  private data: StatInfo[] = []
-  private totalSize = 0
-  private startTime: number = 0
-  private durationInMilliseconds: number | undefined
-  private visited = new Set<string>()
+  private _data: StatInfo[] = []
+  private _totalSizeInKilobytes = 0
+  private _startTimeInMilliseconds: number = 0
+  private _durationInMilliseconds: number | undefined
+  private _visited = new Set<string>()
 
   constructor(private name: string) {
-    this.startTime = performance.now()
+    this._startTimeInMilliseconds = performance.now()
   }
 
   add(path: string, size: number) {
     if (this.has(path)) {
       return
     }
-    this.visited.add(path)
-    this.data.push({ path, size })
-    this.totalSize += size
+    this._visited.add(path)
+    this._data.push({ path, size })
+    this._totalSizeInKilobytes += size
   }
 
   has(path: string): boolean {
-    return this.visited.has(path)
+    return this._visited.has(path)
   }
 
   done() {
-    this.durationInMilliseconds = (performance.now() - this.startTime)
+    this._durationInMilliseconds = (performance.now() - this._startTimeInMilliseconds)
   }
 
-  print() {
-    if (!this.durationInMilliseconds) {
+  get data(): StatResult {
+    if (!this._durationInMilliseconds) {
+      console.error('Stats not done yet, call done() first')
       this.done()
     }
 
-    console.log(`Built ${this.name} (${this.formatFileSize(this.totalSize)}) in ${this.durationInMilliseconds!.toFixed(3)}ms`)
-    if (this.data.length > 1) {
-      for (const stat of this.data) {
-        console.log(`  ${stat.path} (${this.formatFileSize(stat.size)})`)
+    return {
+      name: this.name,
+      stats: this._data,
+      totalSizeInKilobytes: this._totalSizeInKilobytes,
+      durationInMilliseconds: this._durationInMilliseconds!
+    }
+  }
+}
+
+export function formatFileSize(bytes: number): string {
+  const fileSizeInKB = bytes / 1024
+  return `${fileSizeInKB.toFixed(2)} KB`
+}
+
+export function printStat(stats: Array<StatResult>) {
+  for (const stat of stats) {
+    console.log(`Built ${stat.name} (${formatFileSize(stat.totalSizeInKilobytes)}) in ${stat.durationInMilliseconds!.toFixed(3)}ms`)
+    if (stat.stats.length > 1) {
+      for (const s of stat.stats) {
+        console.log(`  ${s.path}: ${formatFileSize(s.size)}`)
       }
     }
   }
+}
 
-  private formatFileSize(bytes: number): string {
-    const fileSizeInKB = bytes / 1024
-    return `${fileSizeInKB.toFixed(2)} KB`
-  }
+export function printAggregateStats(stats: Array<Array<StatResult>>) {
+  stats.forEach(s => printStat(s))
 }

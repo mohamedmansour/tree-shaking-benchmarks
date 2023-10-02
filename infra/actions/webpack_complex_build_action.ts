@@ -7,17 +7,14 @@ import MiniCssExtractPlugin from 'mini-css-extract-plugin'
 import { copyFolder } from '../utils/file_utils.js'
 import { WebpackBaseAction } from './webpack_base_action.js'
 import { ActionOptions } from './base_action.js'
-import { Stats } from '../utils/stats_utils.js'
+import { Stats, StatResult } from '../utils/stats_utils.js'
 
 class WebpackComplexBuildAction extends WebpackBaseAction {
-  async run(): Promise<void> {
-    const entryPoints = this.getEntryPoints()
-    for (const entryPoint in entryPoints) {
-      await this.build({ [entryPoint]: entryPoints[entryPoint] }, `webpack-complex-${entryPoint}`)
-    }
+  public getActionName(): string {
+    return 'webpack-complex'
   }
 
-  private async build(entryPoints: Record<string, string>, name: string): Promise<void> {
+  public async build(entryPoints: Record<string, string>, name: string): Promise<StatResult> {
     copyFolder('www/webpack', 'dist/webpack-complex')
     return new Promise((resolve, reject) => {
       try {
@@ -69,7 +66,7 @@ class WebpackComplexBuildAction extends WebpackBaseAction {
   }
 }
 
-export default function (options: ActionOptions): Promise<void> {
+export default function (options: ActionOptions): Promise<Array<StatResult>> {
   const action = new WebpackComplexBuildAction(options)
   return action.run()
 }

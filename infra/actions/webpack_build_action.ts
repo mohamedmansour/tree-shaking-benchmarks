@@ -3,18 +3,16 @@ import webpack from 'webpack'
 
 import { DIST_DIR } from '../config.js'
 import { copyFolder } from '../utils/file_utils.js'
-import { Stats } from '../utils/stats_utils.js'
+import { StatResult, Stats } from '../utils/stats_utils.js'
 import { WebpackBaseAction } from './webpack_base_action.js'
 import { ActionOptions } from './base_action.js'
+
 class WebpackBuildAction extends WebpackBaseAction {
-  async run(): Promise<void> {
-    const entryPoints = this.getEntryPoints()
-    for (const entryPoint in entryPoints) {
-      await this.build({ [entryPoint]: entryPoints[entryPoint] }, `webpack-${entryPoint}`)
-    }
+  public getActionName(): string {
+    return 'webpack'
   }
 
-  private async build(entryPoints: Record<string, string>, name: string): Promise<void> {
+  public async build(entryPoints: Record<string, string>, name: string): Promise<StatResult> {
     copyFolder('www/webpack', 'dist/webpack')
     return new Promise((resolve, reject) => {
       try {
@@ -45,7 +43,7 @@ class WebpackBuildAction extends WebpackBaseAction {
   }
 }
 
-export default function (options: ActionOptions): Promise<void> {
+export default function (options: ActionOptions): Promise<Array<StatResult>> {
   const action = new WebpackBuildAction(options)
   return action.run()
 }

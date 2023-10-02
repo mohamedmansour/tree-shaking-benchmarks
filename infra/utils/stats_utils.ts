@@ -1,3 +1,6 @@
+
+import { table } from './console_utils.js';
+
 export interface StatInfo {
   path: string
   size: number
@@ -59,14 +62,12 @@ export function formatFileSize(bytes: number): string {
 }
 
 export function printStat(stats: Array<StatResult>) {
-  for (const stat of stats) {
-    console.log(`Built ${stat.name} (${formatFileSize(stat.totalSizeInKilobytes)}) in ${stat.durationInMilliseconds!.toFixed(3)}ms`)
-    if (stat.stats.length > 1) {
-      for (const s of stat.stats) {
-        console.log(`  ${s.path}: ${formatFileSize(s.size)}`)
-      }
-    }
-  }
+  table(stats.map(s => ({
+    name: s.name,
+    size: formatFileSize(s.totalSizeInKilobytes),
+    duration: `${s.durationInMilliseconds.toFixed(3)}ms`,
+    files: s.stats.length
+  })))
 }
 
 export function printAggregateStats(stats: Array<Array<StatResult>>) {

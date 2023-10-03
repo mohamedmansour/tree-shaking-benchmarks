@@ -54,11 +54,6 @@ export class Stats {
   }
 }
 
-export function formatFileSize(bytes: number): string {
-  const fileSizeInKB = bytes / 1024
-  return `${fileSizeInKB.toFixed(2)} KB`
-}
-
 export function printStat(stats: Array<StatResult>) {
   console.table(stats.map(s => ({
     name: s.name,
@@ -69,5 +64,72 @@ export function printStat(stats: Array<StatResult>) {
 }
 
 export function printAggregateStats(allstats: Array<Array<StatResult>>) {
-  allstats.forEach(s => printStat(s))
+  const tableData = mergeStats(allstats)
+  console.table(tableData)
+}
+
+export function printMarkdownStats(allstats: Array<Array<StatResult>>) {
+  const tableData = mergeStats(allstats)
+  const tableHeaders = Object.keys(tableData[0])
+  const tableRows = tableData.map((row: any) => `| ${Object.values(row).join(' | ')} |`)
+  const markdownTable = `| ${tableHeaders.join(' | ')} |\n| ${tableHeaders.map(() => '---').join(' | ')}\n${tableRows.join('\n')}`
+  console.log(markdownTable)
+}
+
+function formatFileSize(bytes: number): string {
+  const fileSizeInKB = bytes / 1024
+  return `${fileSizeInKB.toFixed(2)} KB`
+}
+
+function mergeStats(allstats: Array<Array<StatResult>>) {
+  const foundGroups = new Set<string>()
+
+  // Generate the table data by joining all the stats in the same category.
+  const tableData = allstats.reduce((acc: Array<any>, curr: StatResult[], index: number) => {
+    curr.forEach((s: StatResult) => {
+      // Save the group name so we can generate the available columns later.
+      const groupName = s.name.split('-')[0]
+      foundGroups.add(groupName)
+
+      // Find the row in the table data. Needed to merge the stats.
+      const name = s.name.replace(`${groupName}-`, '')
+      let foundIndex = acc.findIndex((a: StatResult) => {
+        return a.name === name;
+      })
+      
+      if (foundIndex === -1) { // If not found, add a new row.
+        acc.push({
+          name: name,
+          ['size ' + groupName]: formatFileSize(s.totalSizeInKilobytes),
+          ['duration ' + groupName]: `${s.durationInMilliseconds.toFixed(3)} ms`,
+          ['files ' + groupName]: s.stats.length
+        })
+      } else { // If found, merge the stats.
+        acc[foundIndex]['size ' + groupName] = formatFileSize(s.totalSizeInKilobytes);
+        acc[foundIndex]['duration ' + groupName] = `${s.durationInMilliseconds.toFixed(3)} ms`
+        acc[foundIndex]['files ' + groupName] = s.stats.length
+      }
+    });
+    return acc
+  }, [])
+
+  // Generate the available columns based on the property order.
+  const propertyOrder = ['size', 'duration', 'files']
+  let availableColumns = ['name']
+  propertyOrder.forEach((prop: string) => {
+    foundGroups.forEach((groupName: string) => {
+      availableColumns.push(prop + ' ' + groupName)
+    })
+  })
+
+  // Sort the table based on the available order.
+  tableData.forEach((row: any, idx: number) => {
+    const sortedRow: any = {}
+    availableColumns.forEach((prop: string) => {
+      sortedRow[prop] = row[prop]
+    })
+    tableData[idx] = sortedRow
+  })
+  
+  return tableData
 }

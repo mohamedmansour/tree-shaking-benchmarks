@@ -3,7 +3,7 @@ import fs from 'node:fs'
 
 import { ActionOptions } from './actions/base_action.js'
 import { IS_TYPESCRIPT_ENV, WEBUIS_DIR } from './config.js'
-import { StatResult, printAggregateStats, printStat } from './utils/stats_utils.js'
+import { StatResult, printAggregateStats, printMarkdownStats, printStat } from './utils/stats_utils.js'
 
 import './shims/console_shim.js'
 
@@ -23,7 +23,7 @@ async function measure(func: () => Promise<void>) {
     console.error(e)
   } finally {
     const end = performance.now();
-    console.log(`Total runtime in ${(end - start).toFixed(3)}ms\n`);
+    console.log(`Total runtime in ${(end - start).toFixed(3)} ms\n`);
     process.exit(errorOccurred ? 1 : 0);
   }
 }
@@ -50,8 +50,13 @@ program.command('all:build').action(async (o) => {
       results.push(await run(o, './actions/bun_build_action.js'))
     }
     results.push(await run(o, './actions/esbuild_build_action.js'))
-    results.push(await run(o, './actions/webpack_build_action.js'))
-    printAggregateStats(results)
+    // results.push(await run(o, './actions/webpack_build_action.js'))
+
+    if (o['markdown'] as boolean) {
+      printMarkdownStats(results)
+    } else {
+      printAggregateStats(results)
+    }
   })
 })
 
@@ -59,6 +64,7 @@ const availableWebUIs = fs.readdirSync(WEBUIS_DIR)
 program.commands.forEach(cmd => {
   cmd.addOption(new Option('--webui <name>', 'webui name').choices(availableWebUIs))
   cmd.addOption(new Option('--minify', 'minify the output').default(false));
+  cmd.addOption(new Option('--markdown', 'markdown the output').default(false));
 })
 
 program.parse(process.argv)

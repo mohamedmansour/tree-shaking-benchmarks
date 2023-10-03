@@ -42,4 +42,13 @@ Just type `bun infra/infra.ts bun:build`
 -  You can pass `--webui <name>` to filter down an a specific webui.
 
 ## Latest results
-TBA
+| name | size bun | size esbuild | duration bun | duration esbuild | files bun | files esbuild |
+| --- | --- | --- | --- | --- | --- | ---
+| dynamic | 1.11 KB | 0.26 KB | 3.742 ms | 19.865 ms | 3 | 2 |
+| lit-element | 24.00 KB | 25.74 KB | 10.479 ms | 37.414 ms | 1 | 1 |
+| lit-material | 63.41 KB | 69.13 KB | 16.460 ms | 44.947 ms | 1 | 1 |
+| fast-element | 60.95 KB | 81.77 KB | 20.341 ms | 30.388 ms | 1 | 1 |
+| fast-fluent | 213.74 KB | 235.03 KB | 31.827 ms | 51.956 ms | 1 | 1 |
+| react | 907.57 KB | 982.53 KB | 73.199 ms | 122.457 ms | 1 | 1 |
+| react-fluent | 1075.17 KB | 1155.29 KB | 202.621 ms | 413.537 ms | 1 | 1 |
+| react-fluent-hydration | 1075.15 KB | 1155.28 KB | 285.868 ms | 402.532 ms | 1 | 1 |

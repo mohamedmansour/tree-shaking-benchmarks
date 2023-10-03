@@ -20,7 +20,7 @@ async function measure(func: () => Promise<void>) {
     await func()
   } catch (e) {
     errorOccurred = true;
-    throw e
+    console.error(e)
   } finally {
     const end = performance.now();
     console.log(`Total runtime in ${(end - start).toFixed(3)}ms\n`);

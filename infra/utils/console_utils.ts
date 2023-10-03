@@ -1,5 +1,5 @@
-import { Console } from 'console';
-import { Transform } from 'stream';
+import { Console } from 'console'
+import { Transform } from 'stream'
 
 /**
  * Bun doesn't have console.table, so do this instead which works.
@@ -11,14 +11,14 @@ export function table(input: any) {
   const logger = new Console({ stdout: ts })
   logger.table(input)
   const table = (ts.read() || '').toString()
-  let result = '';
+  let result = ''
   for (let row of table.split(/[\r\n]+/)) {
-    let r = row.replace(/[^┬]*┬/, '┌');
-    r = r.replace(/^├─*┼/, '├');
-    r = r.replace(/│[^│]*/, '');
-    r = r.replace(/^└─*┴/, '└');
-    r = r.replace(/'/g, ' ');
-    result += `${r}\n`;
+    let r = row.replace(/[^┬]*┬/, '┌')
+    r = r.replace(/^├─*┼/, '├')
+    r = r.replace(/│[^│]*/, '')
+    r = r.replace(/^└─*┴/, '└')
+    r = r.replace(/'/g, ' ')
+    result += `${r}\n`
   }
-  console.log(result);
+  console.log(result)
 }

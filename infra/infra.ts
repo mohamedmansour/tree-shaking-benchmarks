@@ -7,25 +7,29 @@ import { StatResult, printAggregateStats, printStat } from './utils/stats_utils.
 
 const program = new Command()
 
-
 async function run(o: ActionOptions, action_clazz: string) {
   return await import(action_clazz).then(module => module.default(o));
 }
 
-async function print(o: ActionOptions, action_clazz: string) {
+async function measure(func: () => Promise<void>) {
   const start = performance.now()
   let errorOccurred = false;
   try {
-    const results = await run(o, action_clazz)
-    printStat(results)
+    await func()
   } catch (e) {
     errorOccurred = true;
     throw e
   } finally {
     const end = performance.now();
-    console.log(`Total runtimes in ${(end - start).toFixed(3)}ms\n`);
+    console.log(`Total runtime in ${(end - start).toFixed(3)}ms\n`);
     process.exit(errorOccurred ? 1 : 0);
   }
+}
+
+async function print(o: ActionOptions, action_clazz: string) {
+  measure(async () => {
+    printStat(await run(o, action_clazz))
+  })
 }
 
 program
@@ -38,14 +42,15 @@ program.command('webpack:build').action(async (o) => await print(o, './actions/w
 program.command('bun:build').action(async (o) => await print(o, './actions/bun_build_action.js'))
 program.command('webpackcomplex:build').action(async (o) => await print(o, './actions/webpack_complex_build_action.js'))
 program.command('all:build').action(async (o) => {
-  const results: Array<Array<StatResult>> = []
-  if (IS_TYPESCRIPT_ENV) {
-    results.push(await run(o, './actions/bun_build_action.js'))
-  }
-  results.push(await run(o, './actions/esbuild_build_action.js'))
-  results.push(await run(o, './actions/webpack_build_action.js'))
-  printAggregateStats(results)
-  process.exit(0)
+  measure(async () => {
+    const results: Array<Array<StatResult>> = []
+    if (IS_TYPESCRIPT_ENV) {
+      results.push(await run(o, './actions/bun_build_action.js'))
+    }
+    results.push(await run(o, './actions/esbuild_build_action.js'))
+    results.push(await run(o, './actions/webpack_build_action.js'))
+    printAggregateStats(results)
+  })
 })
 
 const availableWebUIs = fs.readdirSync(WEBUIS_DIR)

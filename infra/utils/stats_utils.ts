@@ -1,6 +1,4 @@
 
-import { table } from './console_utils.js';
-
 export interface StatInfo {
   path: string
   size: number
@@ -62,14 +60,14 @@ export function formatFileSize(bytes: number): string {
 }
 
 export function printStat(stats: Array<StatResult>) {
-  table(stats.map(s => ({
+  console.table(stats.map(s => ({
     name: s.name,
     size: formatFileSize(s.totalSizeInKilobytes),
-    duration: `${s.durationInMilliseconds.toFixed(3)}ms`,
+    duration: `${s.durationInMilliseconds.toFixed(3)} ms`,
     files: s.stats.length
   })))
 }
 
-export function printAggregateStats(stats: Array<Array<StatResult>>) {
-  stats.forEach(s => printStat(s))
+export function printAggregateStats(allstats: Array<Array<StatResult>>) {
+  allstats.forEach(s => printStat(s))
 }

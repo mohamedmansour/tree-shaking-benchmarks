@@ -11,7 +11,7 @@ import { Stats, StatResult } from '../utils/stats_utils.js'
 
 class WebpackComplexBuildAction extends WebpackBaseAction {
   public getActionName(): string {
-    return 'webpack-complex'
+    return 'webpackcomplex'
   }
 
   public async build(entryPoints: Record<string, string>, name: string): Promise<StatResult> {

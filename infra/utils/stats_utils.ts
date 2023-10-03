@@ -102,19 +102,17 @@ function mergeStats(allstats: Array<Array<StatResult>>) {
           name: name,
           ['size ' + groupName]: formatFileSize(s.totalSizeInKilobytes),
           ['duration ' + groupName]: `${s.durationInMilliseconds.toFixed(3)} ms`,
-          ['files ' + groupName]: s.stats.length
         })
       } else { // If found, merge the stats.
         acc[foundIndex]['size ' + groupName] = formatFileSize(s.totalSizeInKilobytes);
         acc[foundIndex]['duration ' + groupName] = `${s.durationInMilliseconds.toFixed(3)} ms`
-        acc[foundIndex]['files ' + groupName] = s.stats.length
       }
     });
     return acc
   }, [])
 
   // Generate the available columns based on the property order.
-  const propertyOrder = ['size', 'duration', 'files']
+  const propertyOrder = ['size', 'duration']
   let availableColumns = ['name']
   propertyOrder.forEach((prop: string) => {
     foundGroups.forEach((groupName: string) => {

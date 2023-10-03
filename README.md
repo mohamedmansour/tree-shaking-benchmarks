@@ -38,13 +38,13 @@ Just type `npm run infra-node esbuild:build`
 -  `--markdown` to print markdown.
 
 ## Latest results
-| name | size bun | size esbuild | duration bun | duration esbuild | files bun | files esbuild |
+| name | size bun | size esbuild | size webpack | duration bun | duration esbuild | duration webpack |
 | --- | --- | --- | --- | --- | --- | ---
-| dynamic | 1.11 KB | 0.26 KB | 3.742 ms | 19.865 ms | 3 | 2 |
-| lit-element | 24.00 KB | 25.74 KB | 10.479 ms | 37.414 ms | 1 | 1 |
-| lit-material | 63.41 KB | 69.13 KB | 16.460 ms | 44.947 ms | 1 | 1 |
-| fast-element | 60.95 KB | 81.77 KB | 20.341 ms | 30.388 ms | 1 | 1 |
-| fast-fluent | 213.74 KB | 235.03 KB | 31.827 ms | 51.956 ms | 1 | 1 |
-| react | 907.57 KB | 982.53 KB | 73.199 ms | 122.457 ms | 1 | 1 |
-| react-fluent | 1075.17 KB | 1155.29 KB | 202.621 ms | 413.537 ms | 1 | 1 |
-| react-fluent-hydration | 1075.15 KB | 1155.28 KB | 285.868 ms | 402.532 ms | 1 | 1 |
+| dynamic | 1.11 KB | 0.26 KB | 5.54 KB | 3.001 ms | 20.926 ms | 415.204 ms |
+| lit-element | 24.00 KB | 25.74 KB | 27.45 KB | 8.252 ms | 42.883 ms | 1628.428 ms |
+| lit-material | 63.41 KB | 69.13 KB | 86.97 KB | 13.455 ms | 45.595 ms | 2652.559 ms |
+| fast-element | 60.95 KB | 81.77 KB | 83.75 KB | 18.209 ms | 36.057 ms | 1598.785 ms |
+| fast-fluent | 213.74 KB | 235.03 KB | 265.29 KB | 29.057 ms | 56.669 ms | 3876.024 ms |
+| react | 907.57 KB | 982.53 KB | 213.66 KB | 68.827 ms | 134.911 ms | 2191.706 ms |
+| react-fluent | 1075.16 KB | 1155.29 KB | 362.25 KB | 198.722 ms | 403.232 ms | 8304.037 ms |
+| react-fluent-hydration | 1075.17 KB | 1155.28 KB | 362.24 KB | 288.047 ms | 414.445 ms | 9302.264 ms |

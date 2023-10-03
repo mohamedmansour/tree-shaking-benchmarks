@@ -50,7 +50,7 @@ program.command('all:build').action(async (o) => {
       results.push(await run(o, './actions/bun_build_action.js'))
     }
     results.push(await run(o, './actions/esbuild_build_action.js'))
-    // results.push(await run(o, './actions/webpack_build_action.js'))
+    results.push(await run(o, './actions/webpack_build_action.js'))
 
     if (o['markdown'] as boolean) {
       printMarkdownStats(results)

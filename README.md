@@ -36,6 +36,7 @@ Just type `npm run infra-node esbuild:build`
 -  `--minify` to see minified results.
 -  `--webui <name>` to filter down an a specific webui.
 -  `--markdown` to print markdown.
+-  `--iterations <num>` the number of iterations to avg.
 
 ## Latest results
 | name | size bun | size esbuild | size webpack | duration bun | duration esbuild | duration webpack |

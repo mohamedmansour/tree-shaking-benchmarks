@@ -65,6 +65,7 @@ program.commands.forEach(cmd => {
   cmd.addOption(new Option('--webui <name>', 'webui name').choices(availableWebUIs))
   cmd.addOption(new Option('--minify', 'minify the output').default(false));
   cmd.addOption(new Option('--markdown', 'markdown the output').default(false));
+  cmd.addOption(new Option('--iterations <num>', 'number of iterations to run').preset(1).argParser(parseInt));
 })
 
 program.parse(process.argv)

@@ -1,0 +1,30 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"extensions": {
+		"recommendations": [
+			"oven.bun-vscode"
+		]
+	},
+	"launch": {
+		"version": "0.2.0",
+		"configurations": [
+			{
+				"type": "bun",
+				"internalConsoleOptions": "neverOpen",
+				"request": "launch",
+				"name": "Debug Infra",
+				"program": "${workspaceFolder}/infra/infra.ts",
+				"cwd": "${workspaceFolder}",
+				"stopOnEntry": false,
+				"watchMode": false,
+				"args": [
+					"all:build"
+				]
+			}
+		]
+	}
+}

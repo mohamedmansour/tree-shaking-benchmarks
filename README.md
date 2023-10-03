@@ -20,7 +20,7 @@ The purpose of this repo is to compare different Web Framework / Library tree-sh
 1. Setup bun: Open WSL or unix, run `curl -fsSL https://bun.sh/install | bash`
 2. Install dependencies: `bun install`
 ### How to run using Bun
-Just type `bun infra/infra.ts bun:build`
+Just type `bun run infra bun:build`
 
 
 ## Using NodeJS
@@ -28,18 +28,14 @@ Just type `bun infra/infra.ts bun:build`
 1. Set up pnpm: Open powershell, run `iwr https://get.pnpm.io/install.ps1 -useb | iex`
 2. Open a new terminal/restart vscode to ensure the newly stalled pnpm is on the path
 3. Install dependencies: cd to your browser-vnext folder: run `pnpm intall`
-4. Compile the infra: cd to your browser-vnext folder:run `pnpm infra-tsc`
 
 ### How to run using NodeJS
-- Any time you modify the infra: `pnpm infra-tsc`
-- Building the bundles:
-    - `pnpm build`: to run all the bundlers for all the web frameworks.
-    - `pnpm esbuild`, or `pnpm webpack` or `pnpm swc` it will output info to terminal
-- To Start dev server: `pnpm start` (uses esbuild server for now, open for change)
+Just type `npm run infra-node esbuild:build`
 
 ## Arguments to Infra Runner
--  You can pass `--minify` to see minified results.
--  You can pass `--webui <name>` to filter down an a specific webui.
+-  `--minify` to see minified results.
+-  `--webui <name>` to filter down an a specific webui.
+-  `--markdown` to print markdown.
 
 ## Latest results
 | name | size bun | size esbuild | duration bun | duration esbuild | files bun | files esbuild |

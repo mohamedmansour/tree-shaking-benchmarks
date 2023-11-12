@@ -1,3 +1,5 @@
+import 'dotenv/config';
+
 import { Command, Option } from 'commander'
 import fs from 'node:fs'
 
@@ -9,11 +11,11 @@ import './shims/console_shim.js'
 
 const program = new Command()
 
-async function run(o: ActionOptions, action_clazz: string) {
-  return await import(action_clazz).then(module => module.default(o))
+async function run(o: ActionOptions, actionClazz: string) {
+  return await import(actionClazz).then(module => module.default(o))
 }
 
-async function measure(func: () => Promise<void>) {
+async function measure(func: () => Promise<void>, exitOnFinish = true) {
   const start = performance.now()
   let errorOccurred = false
   try {
@@ -23,15 +25,17 @@ async function measure(func: () => Promise<void>) {
     console.error(e)
   } finally {
     const end = performance.now()
-    console.log(`Total runtime in ${(end - start).toFixed(3)} ms\n`)
-    process.exit(errorOccurred ? 1 : 0)
+    console.log(`[runtime] ${(end - start).toFixed(3)} ms\n`)
+    if (exitOnFinish || errorOccurred) {
+      process.exit(errorOccurred ? 1 : 0)
+    }
   }
 }
 
-async function print(o: ActionOptions, action_clazz: string) {
+async function print(o: ActionOptions, actionClazz: string, exitOnFinish = true) {
   measure(async () => {
-    printStat(await run(o, action_clazz))
-  })
+    printStat(await run(o, actionClazz))
+  }, exitOnFinish)
 }
 
 program
@@ -39,7 +43,7 @@ program
   .description('CLI to build and serve.')
   .version('0.0.1')
 program.addHelpCommand()
-program.command('esbuild:serve').description('run test server').action(async (o) => await print(o, './actions/esbuild_serve_action.js'))
+program.command('esbuild:serve').description('run test server').action(async (o) => await print(o, './actions/esbuild_serve_action.js', /*exitOnFinished=*/false))
 program.command('esbuild:build').description('esbuild runner').action(async (o) => await print(o, './actions/esbuild_build_action.js'))
 program.command('webpack:build').description('webpack runner').action(async (o) => await print(o, './actions/webpack_build_action.js'))
 program.command('bun:build').description('bun runner').action(async (o) => await print(o, './actions/bun_build_action.js'))

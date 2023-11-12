@@ -12,6 +12,7 @@
       "esModuleInterop": true,              // Make type system compatible with ESM imports.
       "moduleDetection": "force",           // Force module detection to avoid issues with ESM.
       "forceConsistentCasingInFileNames": true,
+      "incremental": true,                  // Incremental compilation.
       "types": ["bun-types"]
     }
   }

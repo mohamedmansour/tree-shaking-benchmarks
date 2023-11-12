@@ -6,6 +6,7 @@ export interface StatInfo {
 
 export interface StatResult {
   name: string
+  type: string
   stats: StatInfo[]
   totalSizeInKilobytes: number
   durationInMilliseconds: number
@@ -18,7 +19,11 @@ export class Stats {
   private _durationInMilliseconds: number | undefined
   private _visited = new Set<string>()
 
-  constructor(private name: string) {
+  /**
+   * @param name The name of the test 
+   * @param type The type of the test (e.g. esbuild, webpack, etc.)
+   */
+  constructor(private name: string, private type: string) {
     this._startTimeInMilliseconds = performance.now()
   }
 
@@ -47,6 +52,7 @@ export class Stats {
 
     return {
       name: this.name,
+      type: this.type,
       stats: this._data,
       totalSizeInKilobytes: this._totalSizeInKilobytes,
       durationInMilliseconds: this._durationInMilliseconds!
@@ -55,17 +61,24 @@ export class Stats {
 }
 
 export function printStat(stats: Array<StatResult>) {
-  console.table(stats.map(s => ({
+  const tableData = stats.map(s => ({
     name: s.name,
     size: formatFileSize(s.totalSizeInKilobytes),
     duration: `${s.durationInMilliseconds.toFixed(3)} ms`,
     files: s.stats.length
-  })))
+  }))
+
+  if (tableData.length) {
+    console.table(tableData)
+  }
 }
 
 export function printAggregateStats(allstats: Array<Array<StatResult>>) {
   const tableData = mergeStats(allstats)
-  console.table(tableData)
+
+  if (tableData.length) {
+    console.table(tableData)
+  }
 }
 
 export function printMarkdownStats(allstats: Array<Array<StatResult>>) {
@@ -73,7 +86,10 @@ export function printMarkdownStats(allstats: Array<Array<StatResult>>) {
   const tableHeaders = Object.keys(tableData[0])
   const tableRows = tableData.map((row: any) => `| ${Object.values(row).join(' | ')} |`)
   const markdownTable = `| ${tableHeaders.join(' | ')} |\n| ${tableHeaders.map(() => '---').join(' | ')}\n${tableRows.join('\n')}`
-  console.log(markdownTable)
+
+  if (markdownTable.length) {
+    console.log(markdownTable)
+  }
 }
 
 function formatFileSize(bytes: number): string {
@@ -88,7 +104,7 @@ function mergeStats(allstats: Array<Array<StatResult>>) {
   const tableData = allstats.reduce((acc: Array<any>, curr: StatResult[], index: number) => {
     curr.forEach((s: StatResult) => {
       // Save the group name so we can generate the available columns later.
-      const groupName = s.name.split('-')[0]
+      const groupName = s.type
       foundGroups.add(groupName)
 
       // Find the row in the table data. Needed to merge the stats.

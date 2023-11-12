@@ -15,18 +15,22 @@ class EsbuildBuildAction extends EsbuildBaseAction {
   }
 
   public async build(entryPoints: Record<string, string>, name: string): Promise<StatResult> {
-    const stats = new Stats(name)
+    const stats = new Stats(name, this.getActionName())
     const results = await esbuild.build({
       ...this.config,
-      entryPoints
+      outdir: `${this.config.outdir}/${name}`,
+      entryPoints,
+      define: {
+        'window.ENABLE_HOT_RELOADING': 'false'
+      },
     })
     stats.done()
 
     const esbuildDirectory = path.join(DIST_DIR, 'esbuild')
-    fs.mkdirSync(esbuildDirectory, { recursive: true })
-    fs.writeFileSync(path.join(esbuildDirectory, `${name}.meta.json`), JSON.stringify(results.metafile, null, 2))
+    fs.mkdirSync( `${esbuildDirectory}/${name}`, { recursive: true })
+    fs.writeFileSync(path.join(esbuildDirectory, `${name}/meta.json`), JSON.stringify(results.metafile, null, 2))
 
-    copyFolder('www/esbuild', 'dist/esbuild')
+    copyFolder(`webuis/${name}`, `dist/esbuild/${name}`, ['.ts', '.tsx', '.d.ts', '.js'])
 
     for (const output in results.metafile?.outputs) {
       const file = results.metafile?.outputs[output]

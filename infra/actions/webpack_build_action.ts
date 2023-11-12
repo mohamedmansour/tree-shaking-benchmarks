@@ -13,7 +13,7 @@ class WebpackBuildAction extends WebpackBaseAction {
   }
 
   public async build(entryPoints: Record<string, string>, name: string): Promise<StatResult> {
-    copyFolder('www/webpack', 'dist/webpack')
+    copyFolder(`webuis/${name}`, `dist/webpack/${name}`, ['.ts', '.tsx', '.d.ts', '.js'])
     return new Promise((resolve, reject) => {
       try {
         const config: webpack.Configuration = {
@@ -21,7 +21,7 @@ class WebpackBuildAction extends WebpackBaseAction {
           entry: entryPoints,
           output: {
             ...this.config.output,
-            path: path.join(DIST_DIR, 'webpack'),
+            path: path.join(DIST_DIR, 'webpack', name),
           }
         }
 
@@ -34,7 +34,7 @@ class WebpackBuildAction extends WebpackBaseAction {
           });
         }
 
-        const stats = new Stats(name)
+        const stats = new Stats(name, this.getActionName())
         webpack(config, (err, metadata) => this.printStats(name, err, metadata, stats, resolve, reject))
       } catch (err) {
         reject(err)

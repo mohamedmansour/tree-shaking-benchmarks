@@ -1,5 +1,4 @@
 import webpack from 'webpack'
-import path from 'node:path'
 
 import { ActionOptions, BaseAction } from './base_action.js'
 import { StatResult, Stats } from '../utils/stats_utils.js'
@@ -15,9 +14,14 @@ export abstract class WebpackBaseAction extends BaseAction {
       resolve: {
         extensions: ['.js', '.ts', '.tsx'],
         extensionAlias: {
-          '.js': ['.ts', '.js'],
+          '.js': ['.ts', '.js', '.tsx'],
         }
       },
+      plugins: [
+        new webpack.DefinePlugin({
+          'window.ENABLE_HOT_RELOADING': 'false'
+        })
+      ],
       experiments: {
         outputModule: true
       },
@@ -40,6 +44,7 @@ export abstract class WebpackBaseAction extends BaseAction {
               {
                 loader: 'esbuild-loader',
                 options: {
+                  tsconfig: './tsconfig.json',
                   target: 'esnext',
                   format: 'esm'
                 }
@@ -52,7 +57,7 @@ export abstract class WebpackBaseAction extends BaseAction {
   }
 
   canFormatESM(entryPoint: string): boolean {
-    return !['react-fluent', 'react-fluent-hydration'].includes(entryPoint)
+    return !['react'].includes(entryPoint)
   }
 
   printStats(name: string, err: Error | undefined, metadata: webpack.Stats | undefined, stats: Stats, resolve: (value: StatResult | PromiseLike<StatResult>) => void, reject: (reason?: any) => void) {

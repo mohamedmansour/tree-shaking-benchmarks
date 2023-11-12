@@ -16,13 +16,27 @@
 				"type": "bun",
 				"internalConsoleOptions": "neverOpen",
 				"request": "launch",
-				"name": "Debug Infra",
+				"name": "Debug Infra (bun)",
 				"program": "${workspaceFolder}/infra/infra.ts",
 				"cwd": "${workspaceFolder}",
 				"stopOnEntry": false,
 				"watchMode": false,
 				"args": [
 					"all:build"
+				]
+			},
+			{
+				"type": "node",
+				"request": "launch",
+				"name": "Debug Infra (node)",
+				"program": "${workspaceFolder}/infra/infra.ts",
+				"cwd": "${workspaceFolder}",
+				"stopOnEntry": false,
+				"args": [
+					"all:build"
+				],
+				"outFiles": [
+					"${workspaceFolder}/dist/**/*.js"
 				]
 			}
 		]

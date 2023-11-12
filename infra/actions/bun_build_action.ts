@@ -12,7 +12,7 @@ class BunBuildAction extends BaseAction {
   public async build(entryPoints: Record<string, string>, name: string): Promise<StatResult> {
     const entryPoint = Object.values(entryPoints)[0]
     const webuiName = path.dirname(entryPoint)
-    const stats = new Stats(name)
+    const stats = new Stats(name, this.getActionName())
     
     const response = await Bun.build({
       entrypoints: [entryPoint],

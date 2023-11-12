@@ -59,7 +59,7 @@ export abstract class BaseAction {
       const entryPoints = this.getEntryPoints()
       const runners = []
       for (const entryPoint in entryPoints) {
-        runners.push(this.build({ [entryPoint]: entryPoints[entryPoint] }, `${this.getActionName()}-${entryPoint}`))
+        runners.push(this.build({ [entryPoint]: entryPoints[entryPoint] }, entryPoint))
       }
       resolve(Promise.all(runners))
     })

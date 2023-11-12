@@ -1,9 +1,9 @@
 import * as esbuild from 'esbuild'
 
 import { EsbuildBaseAction } from './esbuild_base_action.js'
-import { copyFolder } from '../utils/file_utils.js'
+import { deleteFolderRecursive, symlinkDirRecursive } from '../utils/file_utils.js'
 import { ActionOptions } from './base_action.js'
-import { StatResult, Stats } from '../utils/stats_utils.js'
+import { StatResult } from '../utils/stats_utils.js'
 
 class EsbuildServeAction extends EsbuildBaseAction {
   getActionName(): string {
@@ -11,25 +11,40 @@ class EsbuildServeAction extends EsbuildBaseAction {
   }
   
   override async run(): Promise<Array<StatResult>> {
+    if (!this.webui) {
+      throw new Error('--webui is undefined')
+    }
+    console.info(`[loading] ${this.webui}`);
+    
+    deleteFolderRecursive('dist/serve');
+
     // Build the app.
     const esbuildOptions: esbuild.BuildOptions = {
       ...this.config,
-      entryPoints: this.getEntryPoints()
+      entryPoints: this.getEntryPoints(),
+      outdir: 'dist/serve/',
+      define: {
+        'window.ENABLE_HOT_RELOADING': process.env.ENABLE_HOT_RELOADING === 'true' ? 'true' : 'false'
+      },
     }
+    
+    const hotReloadingEnabled = esbuildOptions.define!['window.ENABLE_HOT_RELOADING'] === 'true';
+    console.info(`[    env] hot reloading ${hotReloadingEnabled ? 'enabled' : 'disabled'}`);
+
     const context = await esbuild.context(esbuildOptions)
 
-    copyFolder('www', 'dist')
+    symlinkDirRecursive(`webuis/${this.webui}`, 'dist/serve', ['.ts', '.tsx', '.d.ts', '.js'])
 
     // Add Live Reloading.
     await context.watch()
 
     // Start webserver on random port.
     const { host, port } = await context.serve({
-      servedir: 'dist',
+      servedir: 'dist/serve',
       onRequest: (args) => this.onEsbuildRequest(args)
     })
 
-    console.log(`[  ready] http://${host}:${port}/`)
+    console.log(`[  ready] http://localhost:${port}/`)
     
     return []
   }

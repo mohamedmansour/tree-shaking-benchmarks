@@ -57,7 +57,7 @@ class WebpackComplexBuildAction extends WebpackBaseAction {
             ]
           }
         }
-        const stats = new Stats(name)
+        const stats = new Stats(name, this.getActionName())
         webpack(config, (err, metadata) => this.printStats(name, err, metadata, stats, resolve, reject))
       } catch (err) {
         reject(err)

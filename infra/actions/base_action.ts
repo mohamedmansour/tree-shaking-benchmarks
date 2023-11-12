@@ -1,6 +1,5 @@
-import { ENTRY_POINTS } from '../config.js'
 import { StatInfo, StatResult } from '../utils/stats_utils.js'
-
+import packageJson from '../../package.json'
 export type ActionOptions = Record<string, string | boolean | number>
 
 export abstract class BaseAction {
@@ -15,16 +14,17 @@ export abstract class BaseAction {
   }
 
   getEntryPoints(): Record<string, string> {
+    const entryPoints = packageJson.entryPoints as Record<string, string>
     if (!this.webui) {
-      return ENTRY_POINTS
+      return entryPoints
     }
 
-    if (!ENTRY_POINTS[this.webui]) {
+    if (!entryPoints[this.webui]) {
       throw new Error(`Unknown webui: ${this.webui}`)
     }
 
     return {
-      [this.webui]: ENTRY_POINTS[this.webui]
+      [this.webui]: entryPoints[this.webui]
     }
   }
   

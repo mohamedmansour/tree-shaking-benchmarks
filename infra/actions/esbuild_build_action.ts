@@ -5,7 +5,7 @@ import * as esbuild from 'esbuild'
 
 import { DIST_DIR } from '../config.js'
 import { EsbuildBaseAction } from './esbuild_base_action.js'
-import { copyFolder, getFileSizeInBytes } from '../utils/file_utils.js'
+import { copyFolder, getFileNameWithoutExtension, getFileSizeInBytes } from '../utils/file_utils.js'
 import { ActionOptions } from './base_action.js'
 import { Stats, StatResult } from '../utils/stats_utils.js'
 
@@ -19,10 +19,7 @@ class EsbuildBuildAction extends EsbuildBaseAction {
     const results = await esbuild.build({
       ...this.config,
       outdir: `${this.config.outdir}/${name}`,
-      entryPoints,
-      define: {
-        'window.ENABLE_HOT_RELOADING': 'false'
-      },
+      entryPoints
     })
     stats.done()
 
@@ -36,12 +33,12 @@ class EsbuildBuildAction extends EsbuildBaseAction {
       const file = results.metafile?.outputs[output]
       if (file.entryPoint) {
         const normalizedOutput = path.normalize(output.replace(this.config.outdir as string, ''))
-        stats.add(normalizedOutput, file.bytes)
+        stats.add(normalizedOutput, file.bytes, getFileNameWithoutExtension(file.entryPoint) === name)
 
         file.imports.forEach((imported) => {
           const normalizedImport = path.normalize(imported.path.replace(this.config.outdir as string, ''))
           if (imported.path.search('node_modules') === -1) {
-            stats.add(normalizedImport, getFileSizeInBytes(imported.path))
+            stats.add(normalizedImport, getFileSizeInBytes(imported.path), getFileNameWithoutExtension(normalizedImport) === name)
           }
         })
       }

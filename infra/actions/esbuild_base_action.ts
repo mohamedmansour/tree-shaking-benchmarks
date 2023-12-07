@@ -11,12 +11,13 @@ export abstract class EsbuildBaseAction extends BaseAction {
       splitting: true,
       outdir: 'dist/esbuild/',
       format: 'esm',
+      chunkNames: '[name]',
       minify: this.minify,
       minifyIdentifiers: this.minify,
       minifySyntax: this.minify,
       minifyWhitespace: this.minify,
       target: 'esnext',
-      sourcemap: true,
+      sourcemap: 'external',
       tsconfig: 'tsconfig.json',
       metafile: true
     }

@@ -2,6 +2,7 @@ import webpack from 'webpack'
 
 import { ActionOptions, BaseAction } from './base_action.js'
 import { StatResult, Stats } from '../utils/stats_utils.js'
+import { getFileNameWithoutExtension } from '../utils/file_utils.js'
 
 export abstract class WebpackBaseAction extends BaseAction {
   config: webpack.Configuration
@@ -17,11 +18,6 @@ export abstract class WebpackBaseAction extends BaseAction {
           '.js': ['.ts', '.js', '.tsx'],
         }
       },
-      plugins: [
-        new webpack.DefinePlugin({
-          'window.ENABLE_HOT_RELOADING': 'false'
-        })
-      ],
       experiments: {
         outputModule: true
       },
@@ -71,7 +67,7 @@ export abstract class WebpackBaseAction extends BaseAction {
       })
 
       for (const asset of buildStats.assets || []) {
-        stats.add(asset.name, asset.size)
+        stats.add(asset.name, asset.size, getFileNameWithoutExtension(asset.name) === name)
       }
 
       resolve(stats.data)

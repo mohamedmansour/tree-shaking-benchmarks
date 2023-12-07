@@ -8,6 +8,7 @@ export interface StatResult {
   name: string
   type: string
   stats: StatInfo[]
+  mainSizeInKilobytes: number
   totalSizeInKilobytes: number
   durationInMilliseconds: number
 }
@@ -15,6 +16,7 @@ export interface StatResult {
 export class Stats {
   private _data: StatInfo[] = []
   private _totalSizeInKilobytes = 0
+  private _mainSizeInKilobytes = 0
   private _startTimeInMilliseconds: number = 0
   private _durationInMilliseconds: number | undefined
   private _visited = new Set<string>()
@@ -27,13 +29,14 @@ export class Stats {
     this._startTimeInMilliseconds = performance.now()
   }
 
-  add(path: string, size: number) {
+  add(path: string, size: number, isMainEntryPoint: boolean) {
     if (this.has(path)) {
       return
     }
     this._visited.add(path)
     this._data.push({ path, size })
     this._totalSizeInKilobytes += size
+    this._mainSizeInKilobytes += isMainEntryPoint ? size : 0
   }
 
   has(path: string): boolean {
@@ -54,6 +57,7 @@ export class Stats {
       name: this.name,
       type: this.type,
       stats: this._data,
+      mainSizeInKilobytes: this._mainSizeInKilobytes,
       totalSizeInKilobytes: this._totalSizeInKilobytes,
       durationInMilliseconds: this._durationInMilliseconds!
     }
@@ -63,7 +67,7 @@ export class Stats {
 export function printStat(stats: Array<StatResult>) {
   const tableData = stats.map(s => ({
     name: s.name,
-    size: formatFileSize(s.totalSizeInKilobytes),
+    size: `${formatFileSize(s.mainSizeInKilobytes)} (${formatFileSize(s.totalSizeInKilobytes)})`,
     duration: `${s.durationInMilliseconds.toFixed(3)} ms`,
     files: s.stats.length
   }))
@@ -112,16 +116,19 @@ function mergeStats(allstats: Array<Array<StatResult>>) {
       let foundIndex = acc.findIndex((a: StatResult) => {
         return a.name === name;
       })
+
+      const size = `${formatFileSize(s.mainSizeInKilobytes)} (${formatFileSize(s.totalSizeInKilobytes)})`
+      const duration = `${s.durationInMilliseconds.toFixed(3)} ms`
       
       if (foundIndex === -1) { // If not found, add a new row.
         acc.push({
           name: name,
-          ['size ' + groupName]: formatFileSize(s.totalSizeInKilobytes),
-          ['duration ' + groupName]: `${s.durationInMilliseconds.toFixed(3)} ms`,
+          ['size ' + groupName]: size,
+          ['duration ' + groupName]: duration,
         })
       } else { // If found, merge the stats.
-        acc[foundIndex]['size ' + groupName] = formatFileSize(s.totalSizeInKilobytes);
-        acc[foundIndex]['duration ' + groupName] = `${s.durationInMilliseconds.toFixed(3)} ms`
+        acc[foundIndex]['size ' + groupName] = size;
+        acc[foundIndex]['duration ' + groupName] = duration
       }
     });
     return acc

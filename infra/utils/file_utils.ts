@@ -12,40 +12,48 @@ export function copyFolder(sourceFolder: string, destinationFolder: string, excl
   for (const file of files) {
     const sourceFilePath = path.join(sourceFolder, file)
     const destinationFilePath = path.join(destinationFolder, file)
-    const fileExtension = path.extname(file);
+    const fileExtension = path.extname(file)
     if (fs.statSync(sourceFilePath).isDirectory()) {
       copyFolder(sourceFilePath, destinationFilePath, excludedExtensions)
     } else if (!excludedExtensions.includes(fileExtension)) {
       fs.mkdirSync(destinationFolder, { recursive: true })
-      fs.copyFileSync(sourceFilePath, destinationFilePath);
+      fs.copyFileSync(sourceFilePath, destinationFilePath)
     }
   }
 }
 
 export function symlinkDirRecursive(sourceDir: string, targetDir: string, excludedExtensions: string[] = []): void {
+  if (!fs.existsSync(sourceDir)) {
+    return
+  }
+  
   fs.readdirSync(sourceDir).forEach((file) => {
-    const sourcePath = path.join(sourceDir, file);
-    const targetPath = path.join(targetDir, file);
-    const fileExtension = path.extname(file);
+    const sourcePath = path.join(sourceDir, file)
+    const targetPath = path.join(targetDir, file)
+    const fileExtension = path.extname(file)
     if (fs.statSync(sourcePath).isDirectory()) {
       symlinkDirRecursive(sourcePath, targetPath, excludedExtensions);
     } else if (!excludedExtensions.includes(fileExtension)) {
       fs.mkdirSync(targetDir, { recursive: true })
-      fs.linkSync(sourcePath, targetPath);
+      fs.linkSync(sourcePath, targetPath)
     }
-  });
+  })
 }
 
 export function deleteFolderRecursive(path: string) {
   if (fs.existsSync(path)) {
     fs.readdirSync(path).forEach((file) => {
-      const curPath = `${path}/${file}`;
+      const curPath = `${path}/${file}`
       if (fs.lstatSync(curPath).isDirectory()) {
-        deleteFolderRecursive(curPath);
+        deleteFolderRecursive(curPath)
       } else {
-        fs.unlinkSync(curPath);
+        fs.unlinkSync(curPath)
       }
-    });
+    })
     fs.rmdirSync(path);
   }
+}
+
+export function getFileNameWithoutExtension(fileName: string): string {
+  return path.basename(fileName, path.extname(fileName))
 }

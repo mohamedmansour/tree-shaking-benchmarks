@@ -15,7 +15,7 @@ class WebpackComplexBuildAction extends WebpackBaseAction {
   }
 
   public async build(entryPoints: Record<string, string>, name: string): Promise<StatResult> {
-    copyFolder('www/webpack', 'dist/webpack-complex')
+    copyFolder(`webuis/${name}`, `dist/webpackcomplex/${name}`, ['.ts', '.tsx', '.d.ts', '.js'])
     return new Promise((resolve, reject) => {
       try {
         const config: webpack.Configuration = {
@@ -23,7 +23,7 @@ class WebpackComplexBuildAction extends WebpackBaseAction {
           entry: entryPoints,
           output: {
             ...this.config.output,
-            path: path.join(DIST_DIR, 'webpack-complex'),
+            path: path.join(DIST_DIR, 'webpack-complex', name),
           },
           plugins: [
             new MiniCssExtractPlugin(), new GriffelCSSExtractionPlugin()

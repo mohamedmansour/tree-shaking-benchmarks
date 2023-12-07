@@ -22,18 +22,22 @@ class EsbuildServeAction extends EsbuildBaseAction {
     const esbuildOptions: esbuild.BuildOptions = {
       ...this.config,
       entryPoints: this.getEntryPoints(),
-      outdir: 'dist/serve/',
-      define: {
-        'window.ENABLE_HOT_RELOADING': process.env.ENABLE_HOT_RELOADING === 'true' ? 'true' : 'false'
-      },
+      outdir: 'dist/serve/'
     }
     
-    const hotReloadingEnabled = esbuildOptions.define!['window.ENABLE_HOT_RELOADING'] === 'true';
+    const hotReloadingEnabled = process.env.ENABLE_HOT_RELOADING === 'true';
+    if (hotReloadingEnabled) {
+      esbuildOptions.banner = { js: '(() => new EventSource(\'/esbuild\').onmessage = () => location.reload())();' }
+    }
+    
     console.info(`[    env] hot reloading ${hotReloadingEnabled ? 'enabled' : 'disabled'}`);
 
     const context = await esbuild.context(esbuildOptions)
 
     symlinkDirRecursive(`webuis/${this.webui}`, 'dist/serve', ['.ts', '.tsx', '.d.ts', '.js'])
+
+    // Copy the public folder.
+    symlinkDirRecursive(`public/${this.webui}`, 'dist/serve')
 
     // Add Live Reloading.
     await context.watch()

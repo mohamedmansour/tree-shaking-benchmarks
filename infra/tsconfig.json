@@ -1,7 +1,6 @@
 {
     "extends": "./tsconfig.base.json",
     "compilerOptions": {
-        "outDir": "../dist/infra",     // Output directory for infra code.
-        "resolveJsonModule": true      // Enable JSON module resolution.
+        "outDir": "../dist/infra"     // Output directory for infra code.
     }
 }

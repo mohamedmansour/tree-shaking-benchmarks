@@ -71,11 +71,11 @@ export abstract class BaseAction {
   }
 
   private runOnce(): Promise<Array<StatResult>> {
-    return new Promise((resolve) => {
+    return new Promise(async (resolve) => {
       const entryPoints = this.getEntryPoints()
       const runners = []
       for (const entryPoint in entryPoints) {
-        runners.push(this.build({ [entryPoint]: entryPoints[entryPoint] }, entryPoint))
+        runners.push(await this.build({ [entryPoint]: entryPoints[entryPoint] }, entryPoint))
       }
       resolve(Promise.all(runners))
     })

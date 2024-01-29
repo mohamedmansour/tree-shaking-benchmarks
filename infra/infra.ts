@@ -47,6 +47,7 @@ program.command('esbuild:serve').description('run test server').action(async (o)
 program.command('esbuild:build').description('esbuild runner').action(async (o) => await print(o, './actions/esbuild_build_action.js'))
 program.command('webpack:build').description('webpack runner').action(async (o) => await print(o, './actions/webpack_build_action.js'))
 program.command('bun:build').description('bun runner').action(async (o) => await print(o, './actions/bun_build_action.js'))
+program.command('rspack:build').description('rspack runner').action(async (o) => await print(o, './actions/rspack_build_action.js'))
 program.command('webpackcomplex:build').description('webpack custom').action(async (o) => await print(o, './actions/webpack_complex_build_action.js'))
 program.command('all:build').description('run all at once aggregate view').action(async (o) => {
   measure(async () => {
@@ -56,6 +57,7 @@ program.command('all:build').description('run all at once aggregate view').actio
     }
     results.push(await run(o, './actions/esbuild_build_action.js'))
     results.push(await run(o, './actions/webpack_build_action.js'))
+    results.push(await run(o, './actions/rspack_build_action.js'))
 
     if (o['markdown'] as boolean) {
       printMarkdownStats(results)

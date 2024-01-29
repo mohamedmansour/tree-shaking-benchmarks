@@ -12,7 +12,7 @@
 <!-- /TOC -->
 
 
-The purpose of this repo is to compare different Web Framework / Library tree-shaking abilities, build time speed, and bundle size by importing a single `Button` component. 
+The purpose of this repo is to compare different Web Framework / Library tree-shaking abilities, build time speed, and bundle size by importing a single `Button` component.  Supports esbuild, bun, rspack, and webpack.
 
 
 ## Using Bun

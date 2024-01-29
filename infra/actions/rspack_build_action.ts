@@ -18,52 +18,26 @@ class RspackBuildAction extends WebpackBaseAction {
     copyFolder(`webuis/${name}`, `dist/rspack/${name}`, ['.ts', '.tsx', '.d.ts', '.js'])
     return new Promise((resolve, reject) => {
       try {
-        const config: rspack.Configuration  = {
-          mode: "production",
-          devtool: 'hidden-source-map',
-          resolve: {
-            extensions: ['.js', '.ts', '.tsx'],
-            extensionAlias: {
-              '.js': ['.ts', '.js', '.tsx'],
-            }
-          },
-          experiments: {
-            outputModule: true
-          },
-          optimization: {
-            minimize: this.minify
-          },
+        const config: webpack.Configuration = {
+          ...this.config,
+          entry: entryPoints,
           output: {
+            ...this.config.output,
             path: path.join(DIST_DIR, 'rspack', name),
-            publicPath: '/dist/',
-            filename: '[name].js',
-            chunkFormat: 'module',
-            chunkLoading: 'import',
-            module: true,
-            clean: false  // Dont' clean since this is being managed in infra.
-          },
-          module: {
-            rules: [
-              {
-                test: /\.[jt]sx?$/,
-                use: [
-                  {
-                    loader: 'esbuild-loader',
-                    options: {
-                      tsconfig: './tsconfig.json',
-                      target: 'esnext',
-                      format: 'esm'
-                    }
-                  }
-                ]
-              },
-            ],
-          },
-          entry: entryPoints
-        };
+          }
+        }
+
+        // Bug where we cannot format esm for react fluent apps.
+        if (!this.canFormatESM(Object.keys(entryPoints)[0])) {
+          config!.module!.rules!.forEach((rule: any) => {
+              rule.use.forEach((use: any) => {
+                use.options.format = undefined;
+              });
+          });
+        }
 
         const stats = new Stats(name, this.getActionName());
-        rspack.rspack(config, (err, metadata) => this.printStats(name, err || undefined, metadata as unknown as webpack.Stats , stats, resolve, reject))
+        rspack.rspack(config as rspack.Configuration, (err, metadata) => this.printStats(name, err || undefined, metadata as unknown as webpack.Stats , stats, resolve, reject))
       } catch (err) {
         reject(err)
       }

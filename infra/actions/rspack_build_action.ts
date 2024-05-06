@@ -37,7 +37,7 @@ class RspackBuildAction extends WebpackBaseAction {
         }
 
         const stats = new Stats(name, this.getActionName());
-        rspack.rspack(config as rspack.Configuration, (err, metadata) => this.printStats(name, err || undefined, metadata as unknown as webpack.Stats , stats, resolve, reject))
+        rspack.rspack(config as rspack.Configuration, (err, metadata) => this.printStats(name, err || null, metadata as unknown as webpack.Stats , stats, resolve, reject))
       } catch (err) {
         reject(err)
       }

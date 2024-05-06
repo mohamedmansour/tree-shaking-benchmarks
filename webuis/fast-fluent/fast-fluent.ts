@@ -1,5 +1,4 @@
 import { customElement, html, FASTElement } from '@microsoft/fast-element'
-import { DesignToken } from '@microsoft/fast-foundation/design-token.js'
 import { setTheme } from '@fluentui/web-components/theme.js'
 import { webLightTheme } from '@fluentui/tokens'
 import '@fluentui/web-components/button.js'
@@ -13,5 +12,4 @@ import '@fluentui/web-components/button.js'
 })
 export class ExampleApp extends FASTElement {}
 
-DesignToken.registerDefaultStyleTarget()
 setTheme(webLightTheme)

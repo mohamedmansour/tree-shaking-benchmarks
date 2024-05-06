@@ -56,7 +56,7 @@ export abstract class WebpackBaseAction extends BaseAction {
     return !['react'].includes(entryPoint)
   }
 
-  printStats(name: string, err: Error | undefined, metadata: webpack.Stats | undefined, stats: Stats, resolve: (value: StatResult | PromiseLike<StatResult>) => void, reject: (reason?: any) => void) {
+  printStats(name: string, err: Error | null, metadata: webpack.Stats | undefined, stats: Stats, resolve: (value: StatResult | PromiseLike<StatResult>) => void, reject: (reason?: any) => void) {
     if (err || metadata?.hasErrors()) {
       reject(err || metadata?.compilation.errors)
     } else if (metadata) {

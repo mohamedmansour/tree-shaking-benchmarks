@@ -23,7 +23,7 @@ class BunBuildAction extends BaseAction {
       sourcemap: 'external',
       target: 'browser',
       format: 'esm',
-      outdir: 'dist/bun/',
+      outdir: `dist/bun/${name}/`,
       splitting: true,
     })
 

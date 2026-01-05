@@ -7,8 +7,6 @@ import { ActionOptions } from './actions/base_action.js'
 import { IS_TYPESCRIPT_ENV, WEBUIS_DIR } from './config.js'
 import { StatResult, printAggregateStats, printMarkdownStats, printStat } from './utils/stats_utils.js'
 
-import './shims/console_shim.js'
-
 const program = new Command()
 
 async function run(o: ActionOptions, actionClazz: string) {

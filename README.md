@@ -39,13 +39,13 @@ Just type `npm run infra-node esbuild:build`
 -  `--iterations <num>` the number of iterations to avg.
 
 ## Latest results
-| name | size bun | size esbuild | size webpack | duration bun | duration esbuild | duration webpack |
-| --- | --- | --- | --- | --- | --- | ---
-| dynamic | 1.11 KB | 0.26 KB | 5.54 KB | 3.001 ms | 20.926 ms | 415.204 ms |
-| lit-element | 24.00 KB | 25.74 KB | 27.45 KB | 8.252 ms | 42.883 ms | 1628.428 ms |
-| lit-material | 63.41 KB | 69.13 KB | 86.97 KB | 13.455 ms | 45.595 ms | 2652.559 ms |
-| fast-element | 60.95 KB | 81.77 KB | 83.75 KB | 18.209 ms | 36.057 ms | 1598.785 ms |
-| fast-fluent | 213.74 KB | 235.03 KB | 265.29 KB | 29.057 ms | 56.669 ms | 3876.024 ms |
-| react | 907.57 KB | 982.53 KB | 213.66 KB | 68.827 ms | 134.911 ms | 2191.706 ms |
-| react-fluent | 1075.16 KB | 1155.29 KB | 362.25 KB | 198.722 ms | 403.232 ms | 8304.037 ms |
-| react-fluent-hydration | 1075.17 KB | 1155.28 KB | 362.24 KB | 288.047 ms | 414.445 ms | 9302.264 ms |
+| name | size bun | size esbuild | size webpack | size rspack | duration bun | duration esbuild | duration webpack | duration rspack |
+| --- | --- | --- | --- | --- | --- | --- | --- | ---
+| dynamic | 0.22 KB (1.43 KB) | 0.10 KB (0.18 KB) | 5.63 KB (6.02 KB) | 4.47 KB (4.77 KB) | 10.293 ms | 23.895 ms | 228.827 ms | 46.922 ms |
+| lit-element | 54.08 KB (54.08 KB) | 22.80 KB (22.80 KB) | 25.43 KB (25.43 KB) | 26.65 KB (26.65 KB) | 11.543 ms | 25.924 ms | 166.951 ms | 47.928 ms |
+| lit-material | 101.21 KB (101.21 KB) | 69.41 KB (69.41 KB) | 89.16 KB (89.16 KB) | 91.97 KB (91.97 KB) | 14.524 ms | 35.689 ms | 186.225 ms | 47.779 ms |
+| fast-element | 88.29 KB (88.29 KB) | 114.36 KB (114.36 KB) | 116.94 KB (116.94 KB) | 117.92 KB (117.92 KB) | 11.750 ms | 19.386 ms | 165.574 ms | 46.821 ms |
+| fast-fluent | 122.03 KB (122.03 KB) | 184.26 KB (184.26 KB) | 241.13 KB (241.13 KB) | 243.30 KB (243.30 KB) | 19.583 ms | 44.424 ms | 343.019 ms | 84.892 ms |
+| react | 940.43 KB (940.43 KB) | 1045.19 KB (1045.19 KB) | 516.92 KB (516.92 KB) | 516.39 KB (516.39 KB) | 42.010 ms | 61.485 ms | 278.239 ms | 83.877 ms |
+| react-fluent | 1132.26 KB (1132.26 KB) | 1244.91 KB (1244.91 KB) | 673.04 KB (673.04 KB) | 696.92 KB (696.92 KB) | 509.384 ms | 1202.444 ms | 4351.574 ms | 598.786 ms |
+| react-fluent-hydration | 1132.28 KB (1132.28 KB) | 1244.91 KB (1244.91 KB) | 673.03 KB (673.03 KB) | 696.89 KB (696.89 KB) | 286.703 ms | 1139.087 ms | 4358.897 ms | 587.044 ms |

@@ -1,5 +1,5 @@
 import { customElement, html, FASTElement } from '@microsoft/fast-element'
-import { setTheme } from '@fluentui/web-components/theme.js'
+import { setTheme } from '@fluentui/web-components/theme/index.js'
 import { webLightTheme } from '@fluentui/tokens'
 import '@fluentui/web-components/button.js'
 

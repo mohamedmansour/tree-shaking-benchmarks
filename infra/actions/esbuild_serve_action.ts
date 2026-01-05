@@ -43,7 +43,7 @@ class EsbuildServeAction extends EsbuildBaseAction {
     await context.watch()
 
     // Start webserver on random port.
-    const { host, port } = await context.serve({
+    const { port } = await context.serve({
       servedir: 'dist/serve',
       onRequest: (args) => this.onEsbuildRequest(args)
     })

@@ -12,6 +12,7 @@ export abstract class WebpackBaseAction extends BaseAction {
     this.config = {
       mode: "production",
       devtool: 'hidden-source-map',
+      externalsType: 'module-import',
       resolve: {
         extensions: ['.js', '.ts', '.tsx'],
         extensionAlias: {

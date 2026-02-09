@@ -50,6 +50,8 @@
     "esbuild": "^0.27.2",
     "esbuild-loader": "^4.4.2",
     "mini-css-extract-plugin": "^2.9.4",
+    "rolldown": "1.0.0-rc.3",
+    "rollup-plugin-jsshaker": "^0.2.7",
     "typescript": "^5.9.3",
     "webpack": "^5.104.1"
   },

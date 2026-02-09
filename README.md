@@ -39,13 +39,13 @@ Just type `npm run infra-node esbuild:build`
 -  `--iterations <num>` the number of iterations to avg.
 
 ## Latest results
-| name | size esbuild | size webpack | size rspack | size rolldown | size rolldown-jsshaker | duration esbuild | duration webpack | duration rspack | duration rolldown | duration rolldown-jsshaker |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | ---
-| dynamic | 0.10 KB (0.18 KB) | 5.63 KB (6.02 KB) | 4.47 KB (4.77 KB) | 0.16 KB (0.30 KB) | 0.16 KB (0.30 KB) | 6.519 ms | 143.077 ms | 20.710 ms | 20.160 ms | 7.737 ms |
-| lit-element | 22.80 KB (22.80 KB) | 25.43 KB (25.43 KB) | 26.65 KB (26.65 KB) | 21.11 KB (21.11 KB) | 20.40 KB (20.40 KB) | 9.475 ms | 61.717 ms | 15.342 ms | 5.889 ms | 12.688 ms |
-| lit-material | 69.41 KB (69.41 KB) | 89.16 KB (89.16 KB) | 91.97 KB (91.97 KB) | 76.36 KB (76.36 KB) | 72.77 KB (72.77 KB) | 11.557 ms | 91.373 ms | 20.730 ms | 6.865 ms | 19.302 ms |
-| fast-element | 114.36 KB (114.36 KB) | 116.94 KB (116.94 KB) | 117.92 KB (117.92 KB) | 105.69 KB (105.69 KB) | 78.59 KB (78.59 KB) | 7.082 ms | 84.036 ms | 29.349 ms | 8.281 ms | 20.517 ms |
-| fast-fluent | 184.39 KB (184.39 KB) | 241.26 KB (241.26 KB) | 243.43 KB (243.43 KB) | 187.72 KB (187.72 KB) | 150.81 KB (150.81 KB) | 11.937 ms | 160.753 ms | 34.590 ms | 10.877 ms | 34.430 ms |
-| react | 1045.19 KB (1045.19 KB) | 516.92 KB (516.92 KB) | 516.39 KB (516.39 KB) | 854.55 KB (854.55 KB) | 800.96 KB (800.96 KB) | 40.280 ms | 148.423 ms | 64.802 ms | 79.837 ms | 5003.248 ms |
-| react-fluent | 1246.42 KB (1246.42 KB) | 674.16 KB (674.16 KB) | 698.04 KB (698.04 KB) | 1050.81 KB (1050.81 KB) | 949.76 KB (949.76 KB) | 228.894 ms | 1885.361 ms | 375.551 ms | 159.538 ms | 5205.392 ms |
-| react-fluent-hydration | 1246.42 KB (1246.42 KB) | 674.16 KB (674.16 KB) | 698.01 KB (698.01 KB) | 1050.84 KB (1050.84 KB) | 949.70 KB (949.70 KB) | 215.627 ms | 1751.268 ms | 361.966 ms | 165.952 ms | 5132.274 ms |
+| name | size bun | size esbuild | size webpack | size rspack | size rolldown | size rolldown-jsshaker | duration bun | duration esbuild | duration webpack | duration rspack | duration rolldown | duration rolldown-jsshaker |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| dynamic | 0.21 KB | 0.10 KB | 5.63 KB | 4.47 KB | 0.16 KB | 0.16 KB | 1.803 ms | 6.519 ms | 143.077 ms | 20.710 ms | 20.160 ms | 7.737 ms |
+| lit-element | 54.08 KB | 22.80 KB | 25.43 KB | 26.65 KB | 21.11 KB | 20.40 KB | 3.466 ms | 9.475 ms | 61.717 ms | 15.342 ms | 5.889 ms | 12.688 ms |
+| lit-material | 101.21 KB | 69.41 KB | 89.16 KB | 91.97 KB | 76.36 KB | 72.77 KB | 4.085 ms | 11.557 ms | 91.373 ms | 20.730 ms | 6.865 ms | 19.302 ms |
+| fast-element | 89.35 KB | 114.36 KB | 116.94 KB | 117.92 KB | 105.69 KB | 78.59 KB | 3.865 ms | 7.082 ms | 84.036 ms | 29.349 ms | 8.281 ms | 20.517 ms |
+| fast-fluent | 153.05 KB | 184.39 KB | 241.26 KB | 243.43 KB | 187.72 KB | 150.81 KB | 5.992 ms | 11.937 ms | 160.753 ms | 34.590 ms | 10.877 ms | 34.430 ms |
+| react | 940.67 KB | 1045.19 KB | 516.92 KB | 516.39 KB | 854.55 KB | 800.96 KB | 28.741 ms | 40.280 ms | 148.423 ms | 64.802 ms | 79.837 ms | 5003.248 ms |
+| react-fluent | 1134.15 KB | 1246.42 KB | 674.16 KB | 698.04 KB | 1050.81 KB | 949.76 KB | 90.710 ms | 228.894 ms | 1885.361 ms | 375.551 ms | 159.538 ms | 5205.392 ms |
+| react-fluent-hydration | 1134.16 KB | 1246.42 KB | 674.16 KB | 698.01 KB | 1050.84 KB | 949.70 KB | 69.337 ms | 215.627 ms | 1751.268 ms | 361.966 ms | 165.952 ms | 5132.274 ms |
